@@ -1,16 +1,20 @@
-# React + Vite
+# Startup Studio OS
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Two-founder AI startup studio dashboard built with Next.js 14, Tailwind CSS, and TypeScript.
 
-Currently, two official plugins are available:
+## Pages
+1. Command Center — metrics, portfolio ranking, tasks, alerts, AI insights, activity feed
+2. Decision Cockpit — decision log, recurring reviews
+3. Portfolio — company drill-down with milestone progress
+4. Company Profiles — overview, documents, accounts, linked records
+5. Execution — list + kanban task views
+6. Finance — capital ledger, runway cards
+7. Subscriptions — tool stack table
+8. System — founder roles, integration catalog
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Getting Started
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+npm install
+npm run dev
+```

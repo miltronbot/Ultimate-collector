@@ -1,16 +1,17 @@
 import { useMemo } from 'react';
 import {
-  Layers, DollarSign, TrendingUp, Award, BarChart3, PieChart as PieChartIcon,
-  Gem, Star,
+  Layers, DollarSign, TrendingUp, BarChart3, PieChart as PieChartIcon,
+  Star, Clock, ArrowUpRight, ArrowDownRight,
 } from 'lucide-react';
 import {
   AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell,
 } from 'recharts';
 import StatCard from '../components/StatCard';
+import Goals from '../components/Goals';
 import { useCollection } from '../context/CollectionContext';
 import { useTheme } from '../context/ThemeContext';
-import { formatCurrency, generatePortfolioStats } from '../utils/helpers';
+import { formatCurrency, formatDate, generatePortfolioStats } from '../utils/helpers';
 import { CARD_CATEGORIES, CATEGORY_COLORS } from '../utils/constants';
 
 export default function Dashboard({ onViewCollection }) {
@@ -29,6 +30,25 @@ export default function Dashboard({ onViewCollection }) {
 
   const topCards = useMemo(() => {
     return [...cards].sort((a, b) => (b.currentValue || 0) - (a.currentValue || 0)).slice(0, 5);
+  }, [cards]);
+
+  const recentCards = useMemo(() => {
+    return [...cards].sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded)).slice(0, 4);
+  }, [cards]);
+
+  const biggestGainers = useMemo(() => {
+    return [...cards]
+      .map(c => ({ ...c, profit: (c.currentValue || 0) - (c.purchasePrice || 0) }))
+      .sort((a, b) => b.profit - a.profit)
+      .slice(0, 3);
+  }, [cards]);
+
+  const biggestLosers = useMemo(() => {
+    return [...cards]
+      .map(c => ({ ...c, profit: (c.currentValue || 0) - (c.purchasePrice || 0) }))
+      .filter(c => c.profit < 0)
+      .sort((a, b) => a.profit - b.profit)
+      .slice(0, 3);
   }, [cards]);
 
   const tooltipStyle = {
@@ -71,39 +91,14 @@ export default function Dashboard({ onViewCollection }) {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 stagger-children">
-        <StatCard
-          title="Total Cards"
-          value={stats.totalCards}
-          subtitle={`${stats.graded} graded / ${stats.raw} raw`}
-          icon={Layers}
-          color="primary"
-        />
-        <StatCard
-          title="Portfolio Value"
-          value={formatCurrency(stats.totalValue)}
-          subtitle={`Avg ${formatCurrency(stats.avgValue)} per card`}
-          icon={DollarSign}
-          color="green"
-        />
-        <StatCard
-          title="Total Invested"
-          value={formatCurrency(stats.totalCost)}
-          icon={BarChart3}
-          color="blue"
-        />
-        <StatCard
-          title="Total Profit"
-          value={`${stats.totalProfit >= 0 ? '+' : ''}${formatCurrency(stats.totalProfit)}`}
-          subtitle={`${stats.roi >= 0 ? '+' : ''}${stats.roi.toFixed(1)}% ROI`}
-          icon={TrendingUp}
-          color={stats.totalProfit >= 0 ? 'green' : 'red'}
-          trend={stats.roi}
-        />
+        <StatCard title="Total Cards" value={stats.totalCards} subtitle={`${stats.graded} graded / ${stats.raw} raw`} icon={Layers} color="primary" />
+        <StatCard title="Portfolio Value" value={formatCurrency(stats.totalValue)} subtitle={`Avg ${formatCurrency(stats.avgValue)} per card`} icon={DollarSign} color="green" />
+        <StatCard title="Total Invested" value={formatCurrency(stats.totalCost)} icon={BarChart3} color="blue" />
+        <StatCard title="Total Profit" value={`${stats.totalProfit >= 0 ? '+' : ''}${formatCurrency(stats.totalProfit)}`} subtitle={`${stats.roi >= 0 ? '+' : ''}${stats.roi.toFixed(1)}% ROI`} icon={TrendingUp} color={stats.totalProfit >= 0 ? 'green' : 'red'} trend={stats.roi} />
       </div>
 
       {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Value Over Time */}
         <div className="lg:col-span-2 bg-white dark:bg-surface-900 rounded-2xl p-5 border border-surface-200 dark:border-surface-800">
           <div className="flex items-center gap-2 mb-4">
             <TrendingUp size={18} className="text-primary-500" />
@@ -118,36 +113,15 @@ export default function Dashboard({ onViewCollection }) {
                     <stop offset="100%" stopColor="#6366f1" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <XAxis
-                  dataKey="date"
-                  axisLine={false}
-                  tickLine={false}
-                  tick={{ fontSize: 11, fill: '#94a3b8' }}
-                />
-                <YAxis
-                  axisLine={false}
-                  tickLine={false}
-                  tick={{ fontSize: 11, fill: '#94a3b8' }}
-                  tickFormatter={(v) => `$${v}`}
-                />
-                <Tooltip
-                  contentStyle={tooltipStyle}
-                  labelStyle={{ color: isDark ? '#e2e8f0' : '#1e293b', fontWeight: 600, marginBottom: 4 }}
-                  formatter={(value) => [formatCurrency(value), 'Value']}
-                />
-                <Area
-                  type="monotone"
-                  dataKey="value"
-                  stroke="#6366f1"
-                  strokeWidth={2.5}
-                  fill="url(#valueGradient)"
-                />
+                <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: '#94a3b8' }} />
+                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: '#94a3b8' }} tickFormatter={(v) => `$${v}`} />
+                <Tooltip contentStyle={tooltipStyle} labelStyle={{ color: isDark ? '#e2e8f0' : '#1e293b', fontWeight: 600, marginBottom: 4 }} formatter={(value) => [formatCurrency(value), 'Value']} />
+                <Area type="monotone" dataKey="value" stroke="#6366f1" strokeWidth={2.5} fill="url(#valueGradient)" />
               </AreaChart>
             </ResponsiveContainer>
           </div>
         </div>
 
-        {/* Category Breakdown */}
         <div className="bg-white dark:bg-surface-900 rounded-2xl p-5 border border-surface-200 dark:border-surface-800">
           <div className="flex items-center gap-2 mb-4">
             <PieChartIcon size={18} className="text-primary-500" />
@@ -156,23 +130,10 @@ export default function Dashboard({ onViewCollection }) {
           <div className="h-48">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
-                <Pie
-                  data={pieData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={50}
-                  outerRadius={80}
-                  paddingAngle={3}
-                  dataKey="value"
-                >
-                  {pieData.map((entry, idx) => (
-                    <Cell key={idx} fill={entry.color} />
-                  ))}
+                <Pie data={pieData} cx="50%" cy="50%" innerRadius={50} outerRadius={80} paddingAngle={3} dataKey="value">
+                  {pieData.map((entry, idx) => <Cell key={idx} fill={entry.color} />)}
                 </Pie>
-                <Tooltip
-                  contentStyle={tooltipStyle}
-                  formatter={(value, name) => [formatCurrency(value), name]}
-                />
+                <Tooltip contentStyle={tooltipStyle} formatter={(value, name) => [formatCurrency(value), name]} />
               </PieChart>
             </ResponsiveContainer>
           </div>
@@ -193,6 +154,82 @@ export default function Dashboard({ onViewCollection }) {
         </div>
       </div>
 
+      {/* Recently Added + Gainers/Losers */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Recently Added */}
+        <div className="bg-white dark:bg-surface-900 rounded-2xl p-5 border border-surface-200 dark:border-surface-800">
+          <div className="flex items-center gap-2 mb-4">
+            <Clock size={18} className="text-blue-500" />
+            <h3 className="font-semibold text-surface-900 dark:text-white">Recently Added</h3>
+          </div>
+          <div className="space-y-3">
+            {recentCards.map(card => (
+              <div key={card.id} className="flex items-center gap-3">
+                <div className="w-10 h-14 rounded-lg bg-surface-100 dark:bg-surface-800 overflow-hidden shrink-0 flex items-center justify-center">
+                  {card.imageUrl ? (
+                    <img src={card.imageUrl} alt="" className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-2 h-2 rounded-full" style={{ backgroundColor: CATEGORY_COLORS[card.category] }} />
+                  )}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-surface-900 dark:text-white truncate">{card.playerName}</p>
+                  <p className="text-xs text-surface-400">{formatDate(card.dateAdded)}</p>
+                </div>
+                <span className="text-sm font-bold text-surface-900 dark:text-white">{formatCurrency(card.currentValue)}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Biggest Gainers */}
+        <div className="bg-white dark:bg-surface-900 rounded-2xl p-5 border border-surface-200 dark:border-surface-800">
+          <div className="flex items-center gap-2 mb-4">
+            <ArrowUpRight size={18} className="text-emerald-500" />
+            <h3 className="font-semibold text-surface-900 dark:text-white">Top Gainers</h3>
+          </div>
+          <div className="space-y-3">
+            {biggestGainers.map(card => (
+              <div key={card.id} className="flex items-center gap-3">
+                <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: CATEGORY_COLORS[card.category] }} />
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-surface-900 dark:text-white truncate">{card.playerName}</p>
+                  <p className="text-xs text-surface-500 truncate">{card.year} {card.setName}</p>
+                </div>
+                <span className="text-sm font-bold text-emerald-500">+{formatCurrency(card.profit)}</span>
+              </div>
+            ))}
+            {biggestGainers.length === 0 && <p className="text-sm text-surface-400 text-center py-4">No gainers yet</p>}
+          </div>
+        </div>
+
+        {/* Biggest Losers */}
+        <div className="bg-white dark:bg-surface-900 rounded-2xl p-5 border border-surface-200 dark:border-surface-800">
+          <div className="flex items-center gap-2 mb-4">
+            <ArrowDownRight size={18} className="text-red-500" />
+            <h3 className="font-semibold text-surface-900 dark:text-white">Watch List</h3>
+          </div>
+          <div className="space-y-3">
+            {biggestLosers.map(card => (
+              <div key={card.id} className="flex items-center gap-3">
+                <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: CATEGORY_COLORS[card.category] }} />
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-surface-900 dark:text-white truncate">{card.playerName}</p>
+                  <p className="text-xs text-surface-500 truncate">{card.year} {card.setName}</p>
+                </div>
+                <span className="text-sm font-bold text-red-500">{formatCurrency(card.profit)}</span>
+              </div>
+            ))}
+            {biggestLosers.length === 0 && <p className="text-sm text-surface-400 text-center py-4">No cards down in value</p>}
+          </div>
+        </div>
+      </div>
+
+      {/* Goals */}
+      <div className="bg-white dark:bg-surface-900 rounded-2xl p-5 border border-surface-200 dark:border-surface-800">
+        <Goals />
+      </div>
+
       {/* Top Cards */}
       <div className="bg-white dark:bg-surface-900 rounded-2xl p-5 border border-surface-200 dark:border-surface-800">
         <div className="flex items-center justify-between mb-4">
@@ -200,10 +237,7 @@ export default function Dashboard({ onViewCollection }) {
             <Star size={18} className="text-amber-500" />
             <h3 className="font-semibold text-surface-900 dark:text-white">Most Valuable Cards</h3>
           </div>
-          <button
-            onClick={onViewCollection}
-            className="text-sm text-primary-500 hover:text-primary-600 font-medium transition-colors"
-          >
+          <button onClick={onViewCollection} className="text-sm text-primary-500 hover:text-primary-600 font-medium transition-colors">
             View All
           </button>
         </div>

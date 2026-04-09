@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   LayoutDashboard, Library, Sun, Moon, Menu, X,
   Download, Upload, Trash2, RotateCcw, Plus,
+  Heart, BarChart3, Keyboard,
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useCollection } from '../context/CollectionContext';
@@ -10,6 +11,8 @@ import { exportCollection } from '../utils/helpers';
 const NAV_ITEMS = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { id: 'collection', label: 'Collection', icon: Library },
+  { id: 'wishlist', label: 'Wishlist', icon: Heart },
+  { id: 'analytics', label: 'Analytics', icon: BarChart3 },
 ];
 
 export default function Layout({ currentPage, onPageChange, onAddCard, children }) {
@@ -17,6 +20,25 @@ export default function Layout({ currentPage, onPageChange, onAddCard, children 
   const { cards, importCards, clearCollection, resetToSample } = useCollection();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [showShortcuts, setShowShortcuts] = useState(false);
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    function handleKeyDown(e) {
+      // Don't fire when typing in inputs
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
+
+      if (e.key === 'n' && !e.metaKey && !e.ctrlKey) { onAddCard(); }
+      else if (e.key === '1') { onPageChange('dashboard'); }
+      else if (e.key === '2') { onPageChange('collection'); }
+      else if (e.key === '3') { onPageChange('wishlist'); }
+      else if (e.key === '4') { onPageChange('analytics'); }
+      else if (e.key === 'd' && !e.metaKey && !e.ctrlKey) { toggleTheme(); }
+      else if (e.key === '?') { setShowShortcuts(s => !s); }
+    }
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onAddCard, onPageChange, toggleTheme]);
 
   function handleImport() {
     const input = document.createElement('input');
@@ -122,6 +144,12 @@ export default function Layout({ currentPage, onPageChange, onAddCard, children 
                         <Trash2 size={16} />
                         Clear All Data
                       </button>
+                      <div className="border-t border-surface-200 dark:border-surface-700 my-1" />
+                      <button onClick={() => { setShowShortcuts(true); setShowSettings(false); }} className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-surface-700 dark:text-surface-300 hover:bg-surface-100 dark:hover:bg-surface-700 transition-colors">
+                        <Keyboard size={16} />
+                        Keyboard Shortcuts
+                        <span className="ml-auto text-xs text-surface-400 font-mono">?</span>
+                      </button>
                     </div>
                   </>
                 )}
@@ -165,6 +193,41 @@ export default function Layout({ currentPage, onPageChange, onAddCard, children 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {children}
       </main>
+
+      {/* Keyboard Shortcuts Modal */}
+      {showShortcuts && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop bg-black/50 animate-fade-in" onClick={() => setShowShortcuts(false)}>
+          <div className="w-full max-w-md bg-white dark:bg-surface-900 rounded-2xl shadow-2xl border border-surface-200 dark:border-surface-800 overflow-hidden animate-scale-in" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between px-6 py-4 border-b border-surface-200 dark:border-surface-800">
+              <div className="flex items-center gap-2">
+                <Keyboard size={18} className="text-primary-500" />
+                <h2 className="font-bold text-surface-900 dark:text-white">Keyboard Shortcuts</h2>
+              </div>
+              <button onClick={() => setShowShortcuts(false)} className="p-1.5 rounded-lg hover:bg-surface-100 dark:hover:bg-surface-800 text-surface-400">
+                <X size={16} />
+              </button>
+            </div>
+            <div className="p-6 space-y-3">
+              {[
+                ['N', 'Add new card'],
+                ['1', 'Go to Dashboard'],
+                ['2', 'Go to Collection'],
+                ['3', 'Go to Wishlist'],
+                ['4', 'Go to Analytics'],
+                ['D', 'Toggle dark/light mode'],
+                ['?', 'Show/hide shortcuts'],
+              ].map(([key, desc]) => (
+                <div key={key} className="flex items-center justify-between">
+                  <span className="text-sm text-surface-600 dark:text-surface-400">{desc}</span>
+                  <kbd className="px-2.5 py-1 rounded-lg bg-surface-100 dark:bg-surface-800 text-xs font-bold text-surface-600 dark:text-surface-400 border border-surface-200 dark:border-surface-700 min-w-[32px] text-center">
+                    {key}
+                  </kbd>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

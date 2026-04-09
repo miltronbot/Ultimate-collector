@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { X, Save, Trash2 } from 'lucide-react';
+import ImageUpload from './ImageUpload';
 import { CARD_CATEGORIES, CARD_CONDITIONS, GRADE_OPTIONS, CARD_TAGS } from '../utils/constants';
 
 const emptyCard = {
@@ -239,8 +240,10 @@ export default function CardModal({ card, onSave, onDelete, onClose }) {
                   <input className={inputClass} type="date" value={form.purchaseDate} onChange={e => handleChange('purchaseDate', e.target.value)} />
                 </div>
                 <div>
-                  <label className={labelClass}>Image URL</label>
-                  <input className={inputClass} value={form.imageUrl} onChange={e => handleChange('imageUrl', e.target.value)} placeholder="https://..." />
+                  <label className={labelClass}>Card Image</label>
+                  <ImageUpload value={form.imageUrl} onChange={(val) => handleChange('imageUrl', val)} />
+                  <p className="text-xs text-surface-400 mt-1.5">Or paste a URL:</p>
+                  <input className={`${inputClass} mt-1`} value={form.imageUrl?.startsWith('data:') ? '' : form.imageUrl} onChange={e => handleChange('imageUrl', e.target.value)} placeholder="https://..." />
                 </div>
                 <div>
                   <label className={labelClass}>Notes</label>

@@ -1,0 +1,856 @@
+:root {
+  --blue: #3498db;
+  --blue-s: #d6eaf8;
+  --blue-d: #1a6fa0;
+  --yellow: #f1c40f;
+  --yellow-s: #fef9e7;
+  --yellow-d: #b7860b;
+  --green: #27ae60;
+  --green-s: #d5f5e3;
+  --green-d: #1a6b3a;
+  --teal: #1abc9c;
+  --teal-s: #d1f2eb;
+  --teal-d: #0e7a5e;
+  --purple: #9b59b6;
+  --purple-s: #e8daef;
+  --purple-d: #6c3483;
+  --pink: #e91e8c;
+  --pink-s: #fce4f2;
+  --pink-d: #a01060;
+  --orange: #e67e22;
+  --orange-s: #fdebd0;
+  --orange-d: #a04010;
+  --red: #e74c3c;
+  --red-s: #fadbd8;
+  --dark: #2c3e50;
+  --mid: #5d6d7e;
+  --light: #aab7c4;
+  --border: #dce8f0;
+  --radius: 14px;
+  --shadow: 0 2px 12px rgba(52, 152, 219, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: #f4f8fc;
+  color: var(--dark);
+  min-height: 100vh;
+}
+
+/* Header */
+.header {
+  background: linear-gradient(135deg, #1a6fa0, #9b59b6);
+  color: #fff;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+}
+
+.logo {
+  font-family: 'Fredoka One', cursive;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-sub {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  opacity: 0.8;
+  letter-spacing: 0.5px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 13px;
+  font-weight: 700;
+  opacity: 0.9;
+}
+
+.streak-badge {
+  background: rgba(255, 255, 255, 0.18);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+/* Navigation */
+.nav-bar {
+  background: #fff;
+  padding: 0 20px;
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  border-bottom: 2px solid var(--border);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+}
+
+.nav-bar::-webkit-scrollbar {
+  height: 4px;
+}
+
+.nav-bar::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 2px;
+}
+
+.nav-btn {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  padding: 12px 16px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--mid);
+  border-bottom: 3px solid transparent;
+  white-space: nowrap;
+  transition: 0.2s;
+}
+
+.nav-btn:hover {
+  color: var(--blue);
+}
+
+.nav-btn.active {
+  color: var(--blue);
+  border-bottom-color: var(--blue);
+}
+
+/* Main */
+main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 20px;
+}
+
+/* Card */
+.card {
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+
+/* Section Titles */
+.sec {
+  font-family: 'Fredoka One', cursive;
+  font-size: 20px;
+  margin-bottom: 16px;
+  color: var(--dark);
+}
+
+.sec-sm {
+  font-family: 'Fredoka One', cursive;
+  font-size: 15px;
+  margin-bottom: 10px;
+  color: var(--dark);
+}
+
+/* Note/Alert */
+.note {
+  background: var(--yellow-s);
+  border: 1.5px solid var(--yellow);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 13px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-bottom: 18px;
+}
+
+.note-blue {
+  background: var(--blue-s);
+  border-color: var(--blue);
+}
+
+.note-green {
+  background: var(--green-s);
+  border-color: var(--green);
+}
+
+.ni {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+/* Grid Layouts */
+.g2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.g3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.g4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+/* Stats */
+.stat {
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 18px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  text-align: center;
+}
+
+.stat .lbl {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--mid);
+  margin-bottom: 6px;
+}
+
+.stat .val {
+  font-family: 'Fredoka One', cursive;
+  font-size: 36px;
+}
+
+.stat .sub {
+  font-size: 11px;
+  color: var(--light);
+  margin-top: 4px;
+}
+
+.sb .val { color: var(--blue); }
+.sg .val { color: var(--green); }
+.sy .val { color: var(--yellow-d); }
+.sp .val { color: var(--purple); }
+
+/* Welcome Card */
+.welcome {
+  background: linear-gradient(135deg, #fce4f2, var(--yellow-s));
+  border: 1.5px solid var(--pink);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 22px;
+}
+
+.welcome h2 {
+  font-family: 'Fredoka One', cursive;
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.welcome p {
+  font-size: 13px;
+  color: var(--mid);
+  line-height: 1.6;
+  max-width: 500px;
+}
+
+.welcome-emoji {
+  font-size: 64px;
+}
+
+/* Schedule */
+.day-btns {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.day-btn {
+  padding: 8px 18px;
+  border-radius: 20px;
+  border: 2px solid var(--border);
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.2s;
+  background: #fff;
+}
+
+.day-btn:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+}
+
+.day-btn.active {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+}
+
+.blk {
+  display: grid;
+  grid-template-columns: 70px 1fr;
+  gap: 10px;
+  margin-bottom: 8px;
+  align-items: stretch;
+}
+
+.blk-time {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-family: 'Patrick Hand', cursive;
+  font-size: 13px;
+  color: var(--mid);
+}
+
+.blk-card {
+  border-radius: 12px;
+  padding: 12px 16px;
+  border-left: 5px solid;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  transition: transform 0.15s;
+  cursor: default;
+}
+
+.blk-card:hover {
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.blk-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.blk-info {
+  flex: 1;
+}
+
+.blk-title {
+  font-weight: 800;
+  font-size: 14px;
+  margin-bottom: 2px;
+}
+
+.blk-desc {
+  font-size: 12px;
+  color: var(--mid);
+}
+
+.blk-badge {
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--mid);
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.cr { background: var(--blue-s); border-color: var(--blue); }
+.cm { background: var(--yellow-s); border-color: var(--yellow); }
+.cw { background: var(--teal-s); border-color: var(--teal); }
+.cs { background: var(--green-s); border-color: var(--green); }
+.css2 { background: var(--purple-s); border-color: var(--purple); }
+.ca { background: var(--pink-s); border-color: var(--pink); }
+.cbrk { background: #f8fafd; border-color: var(--border); }
+
+/* Game Cards */
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.game-card {
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+  border: 1.5px solid var(--border);
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.game-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  border-color: var(--blue);
+}
+
+.game-card .game-emoji {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.game-card .game-name {
+  font-family: 'Fredoka One', cursive;
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.game-card .game-desc {
+  font-size: 12px;
+  color: var(--mid);
+}
+
+/* Game Play Area */
+.game-area {
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 32px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  text-align: center;
+  min-height: 350px;
+}
+
+.game-question {
+  font-family: 'Fredoka One', cursive;
+  font-size: 48px;
+  margin-bottom: 24px;
+  color: var(--dark);
+}
+
+.game-input {
+  font-family: 'Nunito', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  padding: 12px 24px;
+  border: 3px solid var(--border);
+  border-radius: 12px;
+  text-align: center;
+  width: 200px;
+  outline: none;
+  transition: 0.2s;
+}
+
+.game-input:focus {
+  border-color: var(--blue);
+}
+
+.game-btn {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  padding: 12px 32px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.2s;
+  margin: 8px;
+}
+
+.game-btn-primary {
+  background: var(--blue);
+  color: #fff;
+}
+
+.game-btn-primary:hover {
+  background: var(--blue-d);
+}
+
+.game-btn-success {
+  background: var(--green);
+  color: #fff;
+}
+
+.game-btn-success:hover {
+  background: var(--green-d);
+}
+
+.game-btn-outline {
+  background: #fff;
+  color: var(--dark);
+  border: 2px solid var(--border);
+}
+
+.game-btn-outline:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+}
+
+.game-score {
+  font-family: 'Fredoka One', cursive;
+  font-size: 20px;
+  color: var(--blue);
+  margin-bottom: 16px;
+}
+
+.game-feedback {
+  font-size: 24px;
+  font-weight: 800;
+  margin: 12px 0;
+  min-height: 36px;
+}
+
+.game-feedback.correct {
+  color: var(--green);
+}
+
+.game-feedback.wrong {
+  color: var(--red);
+}
+
+.answer-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin: 16px 0;
+}
+
+.answer-option {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+  padding: 14px 28px;
+  border: 3px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
+  cursor: pointer;
+  transition: 0.2s;
+  min-width: 100px;
+}
+
+.answer-option:hover {
+  border-color: var(--blue);
+  background: var(--blue-s);
+}
+
+.answer-option.correct {
+  border-color: var(--green);
+  background: var(--green-s);
+}
+
+.answer-option.wrong {
+  border-color: var(--red);
+  background: var(--red-s);
+}
+
+/* Letter tiles for word builder */
+.letter-tiles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin: 16px 0;
+}
+
+.letter-tile {
+  width: 48px;
+  height: 48px;
+  font-family: 'Fredoka One', cursive;
+  font-size: 22px;
+  border: 3px solid var(--border);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s;
+  background: #fff;
+  text-transform: uppercase;
+}
+
+.letter-tile:hover {
+  border-color: var(--purple);
+  background: var(--purple-s);
+}
+
+.letter-tile.selected {
+  background: var(--blue);
+  color: #fff;
+  border-color: var(--blue);
+}
+
+.word-display {
+  font-family: 'Fredoka One', cursive;
+  font-size: 36px;
+  letter-spacing: 8px;
+  color: var(--purple);
+  margin: 16px 0;
+  min-height: 50px;
+}
+
+/* Journal */
+.journal-entry {
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  margin-bottom: 12px;
+}
+
+.journal-date {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--mid);
+  margin-bottom: 6px;
+}
+
+.journal-text {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--dark);
+}
+
+.journal-textarea {
+  width: 100%;
+  min-height: 150px;
+  font-family: 'Patrick Hand', cursive;
+  font-size: 18px;
+  padding: 16px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  resize: vertical;
+  outline: none;
+  line-height: 1.8;
+  background: repeating-linear-gradient(
+    transparent,
+    transparent 31px,
+    var(--border) 31px,
+    var(--border) 32px
+  );
+}
+
+.journal-textarea:focus {
+  border-color: var(--teal);
+}
+
+/* Reading Log */
+.book-card {
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.book-emoji {
+  font-size: 36px;
+  flex-shrink: 0;
+}
+
+.book-info {
+  flex: 1;
+}
+
+.book-title {
+  font-weight: 800;
+  font-size: 15px;
+  margin-bottom: 2px;
+}
+
+.book-author {
+  font-size: 12px;
+  color: var(--mid);
+}
+
+.book-pages {
+  font-size: 11px;
+  color: var(--light);
+}
+
+.book-rating {
+  font-size: 18px;
+  letter-spacing: 2px;
+}
+
+/* Badges */
+.badge-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 14px;
+}
+
+.badge-card {
+  text-align: center;
+  padding: 20px 12px;
+  border-radius: var(--radius);
+  background: #fff;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  transition: 0.2s;
+}
+
+.badge-card.earned {
+  border-color: var(--yellow);
+  background: var(--yellow-s);
+}
+
+.badge-card.locked {
+  opacity: 0.5;
+  filter: grayscale(0.8);
+}
+
+.badge-emoji {
+  font-size: 40px;
+  margin-bottom: 8px;
+}
+
+.badge-name {
+  font-family: 'Fredoka One', cursive;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.badge-desc {
+  font-size: 11px;
+  color: var(--mid);
+}
+
+/* Spelling */
+.spell-word {
+  font-family: 'Fredoka One', cursive;
+  font-size: 28px;
+  text-align: center;
+  padding: 16px;
+  background: var(--blue-s);
+  border-radius: var(--radius);
+  border: 1.5px solid var(--blue);
+  margin-bottom: 8px;
+}
+
+.spell-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 10px;
+}
+
+/* Progress Stickers */
+.sticker-chart {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+}
+
+.sticker-slot {
+  aspect-ratio: 1;
+  border-radius: 12px;
+  border: 2px dashed var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  background: #fafcfe;
+  transition: 0.2s;
+}
+
+.sticker-slot.filled {
+  border-style: solid;
+  border-color: var(--yellow);
+  background: var(--yellow-s);
+  animation: pop 0.3s ease;
+}
+
+@keyframes pop {
+  0% { transform: scale(0.5); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+/* Form elements */
+.form-input {
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 14px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  width: 100%;
+  outline: none;
+  transition: 0.2s;
+}
+
+.form-input:focus {
+  border-color: var(--blue);
+}
+
+.form-label {
+  font-size: 13px;
+  font-weight: 800;
+  margin-bottom: 6px;
+  display: block;
+  color: var(--mid);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .g2, .g3, .g4 {
+    grid-template-columns: 1fr;
+  }
+
+  .game-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .welcome {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .welcome-emoji {
+    order: -1;
+    margin-bottom: 12px;
+  }
+
+  .header {
+    padding: 10px 16px;
+  }
+
+  .logo {
+    font-size: 18px;
+  }
+
+  .badge-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .sticker-chart {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .game-question {
+    font-size: 36px;
+  }
+}
+
+@media (max-width: 480px) {
+  .game-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .badge-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .sticker-chart {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { games, sightWordsList, wordBuilderWords, rhymePairs, shapes, phonicsBlends, readingPassages } from '../data/schoolData'
+import { games, sightWordsList, wordBuilderWords, rhymePairs, shapes, phonicsBlends, readingPassages, gameParams } from '../data/schoolData'
 import { recordGameResult } from '../data/progressStore'
 
 function MathFlash() {
@@ -10,14 +10,15 @@ function MathFlash() {
   const [feedback, setFeedback] = useState('')
 
   const newProblem = useCallback(() => {
+    const { addMax, subMax } = gameParams.mathFlash
     const ops = ['+', '-']
     const op = ops[Math.floor(Math.random() * ops.length)]
     let a, b
     if (op === '+') {
-      a = Math.floor(Math.random() * 50) + 1
-      b = Math.floor(Math.random() * 50) + 1
+      a = Math.floor(Math.random() * addMax) + 1
+      b = Math.floor(Math.random() * addMax) + 1
     } else {
-      a = Math.floor(Math.random() * 50) + 20
+      a = Math.floor(Math.random() * subMax) + 2
       b = Math.floor(Math.random() * (a - 1)) + 1
     }
     setProblem({ a, b, op, correct: op === '+' ? a + b : a - b })
@@ -407,12 +408,14 @@ function CountMatch() {
   const [feedback, setFeedback] = useState('')
 
   const newProblem = useCallback(() => {
+    const { max } = gameParams.countMatch
     const emojis = ['🍎', '⭐', '🌸', '🐟', '🦋', '🎈']
     const emoji = emojis[Math.floor(Math.random() * emojis.length)]
-    const count = Math.floor(Math.random() * 9) + 2
+    const count = Math.floor(Math.random() * (max - 1)) + 2
     const display = (emoji + ' ').repeat(count)
     const opts = new Set([count])
-    while (opts.size < 4) opts.add(Math.floor(Math.random() * 12) + 1)
+    let guard = 0
+    while (opts.size < 4 && guard++ < 50) opts.add(Math.floor(Math.random() * (max + 2)) + 1)
     setProblem({ display, count, options: [...opts].sort(() => Math.random() - 0.5) })
     setFeedback('')
   }, [])
@@ -460,13 +463,15 @@ function TellTime() {
   const [feedback, setFeedback] = useState('')
 
   const newRound = useCallback(() => {
+    const { minutes } = gameParams.tellTime
     const h = Math.floor(Math.random() * 12) + 1
-    const m = [0, 15, 30, 45][Math.floor(Math.random() * 4)]
+    const m = minutes[Math.floor(Math.random() * minutes.length)]
     const answer = `${h}:${m.toString().padStart(2, '0')}`
     const opts = new Set([answer])
-    while (opts.size < 4) {
+    let guard = 0
+    while (opts.size < 4 && guard++ < 100) {
       const rh = Math.floor(Math.random() * 12) + 1
-      const rm = [0, 15, 30, 45][Math.floor(Math.random() * 4)]
+      const rm = minutes[Math.floor(Math.random() * minutes.length)]
       opts.add(`${rh}:${rm.toString().padStart(2, '0')}`)
     }
     setTime({ h, m, answer })
@@ -536,7 +541,7 @@ function TellTime() {
   )
 }
 
-const COINS = [
+const ALL_COINS = [
   { name: 'penny', value: 1, emoji: '🟤' },
   { name: 'nickel', value: 5, emoji: '⚪' },
   { name: 'dime', value: 10, emoji: '🔘' },
@@ -549,17 +554,19 @@ function MoneyMath() {
   const [feedback, setFeedback] = useState('')
 
   const newProblem = useCallback(() => {
+    const { coins, minCoins, maxCoins } = gameParams.moneyMath
+    const coinPool = ALL_COINS.filter(c => coins.includes(c.name))
     const picked = []
-    const count = Math.floor(Math.random() * 4) + 2
+    const count = Math.floor(Math.random() * (maxCoins - minCoins + 1)) + minCoins
     let total = 0
     for (let i = 0; i < count; i++) {
-      const coin = COINS[Math.floor(Math.random() * COINS.length)]
+      const coin = coinPool[Math.floor(Math.random() * coinPool.length)]
       picked.push(coin)
       total += coin.value
     }
     const opts = new Set([total])
     let guard = 0
-    while (opts.size < 4 && guard++ < 50) opts.add(Math.floor(Math.random() * 100) + 5)
+    while (opts.size < 4 && guard++ < 50) opts.add(Math.floor(Math.random() * Math.max(60, total * 2)) + 2)
     setProblem({ picked, total, options: [...opts].sort((a, b) => a - b) })
     setFeedback('')
   }, [])
@@ -610,14 +617,15 @@ function Multiplication() {
   const [feedback, setFeedback] = useState('')
 
   const newProblem = useCallback(() => {
-    const groups = Math.floor(Math.random() * 4) + 2
-    const perGroup = Math.floor(Math.random() * 4) + 2
+    const { groupsMax, perGroupMax } = gameParams.multiplication
+    const groups = Math.floor(Math.random() * (groupsMax - 1)) + 2
+    const perGroup = Math.floor(Math.random() * (perGroupMax - 1)) + 2
     const answer = groups * perGroup
     const emojis = ['🍓', '🐞', '🌼', '🐠', '🧁']
     const emoji = emojis[Math.floor(Math.random() * emojis.length)]
     const opts = new Set([answer])
     let guard = 0
-    while (opts.size < 4 && guard++ < 50) opts.add(Math.floor(Math.random() * 24) + 4)
+    while (opts.size < 4 && guard++ < 50) opts.add(Math.floor(Math.random() * (groupsMax * perGroupMax + 4)) + 4)
     setProblem({ groups, perGroup, answer, emoji, options: [...opts].sort((a, b) => a - b) })
     setFeedback('')
   }, [])

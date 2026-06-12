@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { STUDENT_NAME, GRADE, LOCATION, SEMESTER_LABEL } from './data/config'
 import { computeStreak } from './data/progressStore'
 import ErrorBoundary from './components/ErrorBoundary'
@@ -68,6 +68,10 @@ export default function App() {
   const [mode, setMode] = useState('student')
   const Page = pages[currentTab]
   const streak = computeStreak()
+
+  useEffect(() => {
+    document.title = `${STUDENT_NAME}'s ${GRADE} School — ${LOCATION}`
+  }, [])
 
   const tabs = mode === 'student' ? studentTabs : parentTabs
 

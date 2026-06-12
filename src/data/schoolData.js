@@ -1,3 +1,14 @@
+import { GRADE_DATA } from './config'
+
+// Grade-specific content comes from the active grade pack (see Settings)
+export const spellingWords = GRADE_DATA.spellingWords
+export const sightWordsList = GRADE_DATA.sightWords
+export const wordBuilderWords = GRADE_DATA.wordBuilderWords
+export const rhymePairs = GRADE_DATA.rhymePairs
+export const phonicsBlends = GRADE_DATA.phonicsBlends
+export const readingPassages = GRADE_DATA.readingPassages
+export const gameParams = GRADE_DATA.gameParams
+
 export const scheduleData = {
   Monday: [
     { time: '9:00', title: 'Morning Circle', desc: 'Calendar, weather, daily goal', icon: '🌅', type: 'cbrk', badge: '🧑‍🏫 Guided' },
@@ -51,16 +62,6 @@ export const scheduleData = {
   ],
 }
 
-export const spellingWords = {
-  'Week 1': ['the', 'and', 'was', 'for', 'are', 'but', 'not', 'you', 'all', 'can'],
-  'Week 2': ['had', 'her', 'one', 'our', 'out', 'day', 'get', 'has', 'him', 'his'],
-  'Week 3': ['make', 'like', 'time', 'very', 'when', 'come', 'just', 'know', 'take', 'came'],
-  'Week 4': ['look', 'only', 'long', 'find', 'down', 'back', 'give', 'most', 'tell', 'also'],
-  'Week 5': ['play', 'small', 'home', 'read', 'hand', 'high', 'year', 'live', 'girl', 'help'],
-  'Week 6': ['tree', 'city', 'farm', 'hard', 'four', 'keep', 'last', 'kind', 'name', 'near'],
-  'Week 7': ['plant', 'school', 'water', 'story', 'point', 'world', 'house', 'light', 'still', 'three'],
-  'Week 8': ['place', 'think', 'right', 'night', 'never', 'start', 'where', 'after', 'every', 'learn'],
-}
 
 export const games = [
   { id: 'math-flash', name: 'Math Flash', emoji: '⚡', desc: 'Quick addition & subtraction', color: 'var(--yellow)' },
@@ -77,101 +78,10 @@ export const games = [
   { id: 'reading-comp', name: 'Story Time', emoji: '📜', desc: 'Read stories & answer questions', color: 'var(--purple-d)' },
 ]
 
-export const phonicsBlends = [
-  { sounds: ['c', 'a', 't'], options: ['cat', 'cot', 'cut', 'can'], answer: 'cat' },
-  { sounds: ['sh', 'i', 'p'], options: ['shop', 'ship', 'shin', 'chip'], answer: 'ship' },
-  { sounds: ['ch', 'a', 't'], options: ['chat', 'chap', 'that', 'cheat'], answer: 'chat' },
-  { sounds: ['th', 'i', 'n'], options: ['than', 'then', 'thin', 'shin'], answer: 'thin' },
-  { sounds: ['s', 'u', 'n'], options: ['son', 'sun', 'fun', 'sin'], answer: 'sun' },
-  { sounds: ['wh', 'a', 'le'], options: ['while', 'whale', 'wheel', 'well'], answer: 'whale' },
-  { sounds: ['b', 'u', 'g'], options: ['bag', 'big', 'bug', 'bog'], answer: 'bug' },
-  { sounds: ['sh', 'e', 'll'], options: ['shall', 'shell', 'sell', 'spell'], answer: 'shell' },
-  { sounds: ['ch', 'e', 'ck'], options: ['check', 'chick', 'chuck', 'deck'], answer: 'check' },
-  { sounds: ['th', 'u', 'mb'], options: ['thumb', 'thump', 'dumb', 'numb'], answer: 'thumb' },
-  { sounds: ['f', 'r', 'o', 'g'], options: ['frog', 'flag', 'from', 'fog'], answer: 'frog' },
-  { sounds: ['s', 't', 'a', 'r'], options: ['stir', 'star', 'start', 'scar'], answer: 'star' },
-]
 
-export const readingPassages = [
-  {
-    text: 'Mia has a little red wagon. She puts her teddy bear in the wagon and pulls it around the yard. The teddy bear loves the bumpy ride!',
-    question: 'What does Mia put in her wagon?',
-    options: ['Her teddy bear', 'Her puppy', 'Her books', 'Her lunch'],
-    answer: 'Her teddy bear',
-  },
-  {
-    text: 'Sam planted a tiny seed in the spring. He watered it every day. By summer, a tall sunflower grew taller than Sam!',
-    question: 'When did Sam plant the seed?',
-    options: ['In the spring', 'In the winter', 'In the fall', 'At night'],
-    answer: 'In the spring',
-  },
-  {
-    text: 'The Texas horned lizard is a small reptile that lives in dry, sandy places. It eats mostly ants and can puff up its body to look bigger when scared.',
-    question: 'What does the horned lizard mostly eat?',
-    options: ['Ants', 'Leaves', 'Fish', 'Berries'],
-    answer: 'Ants',
-  },
-  {
-    text: 'Ella and her grandma baked cookies on Saturday. First they mixed the dough. Then they rolled it into balls. Last, they baked them for ten minutes.',
-    question: 'What did they do FIRST?',
-    options: ['Mixed the dough', 'Rolled it into balls', 'Baked the cookies', 'Ate the cookies'],
-    answer: 'Mixed the dough',
-  },
-  {
-    text: 'A bluebonnet is the state flower of Texas. In spring, fields across the Hill Country turn blue with thousands of these flowers. Families love to take pictures in them.',
-    question: 'What is the state flower of Texas?',
-    options: ['The bluebonnet', 'The rose', 'The daisy', 'The tulip'],
-    answer: 'The bluebonnet',
-  },
-  {
-    text: 'Max the dog dug a hole under the fence. He wanted to chase the squirrel next door. But the squirrel ran up a tree, and Max just got muddy paws!',
-    question: 'Why did Max dig the hole?',
-    options: ['To chase the squirrel', 'To bury a bone', 'To find water', 'To make a bed'],
-    answer: 'To chase the squirrel',
-  },
-  {
-    text: 'Rain comes from clouds. When tiny water drops in a cloud get too heavy, they fall to the ground as rain. Puddles form, and plants drink up the water.',
-    question: 'What happens when water drops get too heavy?',
-    options: ['They fall as rain', 'They turn to snow', 'They float away', 'They disappear'],
-    answer: 'They fall as rain',
-  },
-  {
-    text: 'Leo lost his first tooth at school. His teacher gave him a tiny treasure box to keep it safe. Leo could not stop smiling all the way home.',
-    question: 'How did Leo feel at the end of the story?',
-    options: ['Happy', 'Scared', 'Angry', 'Sleepy'],
-    answer: 'Happy',
-  },
-]
 
-export const sightWordsList = [
-  'the', 'of', 'and', 'a', 'to', 'in', 'is', 'you', 'that', 'it',
-  'he', 'was', 'for', 'on', 'are', 'as', 'with', 'his', 'they', 'be',
-  'at', 'one', 'have', 'this', 'from', 'or', 'had', 'by', 'not', 'but',
-  'some', 'what', 'there', 'we', 'can', 'out', 'other', 'were', 'all', 'your',
-  'when', 'up', 'use', 'word', 'how', 'said', 'each', 'she', 'which', 'do',
-]
 
-export const wordBuilderWords = [
-  'cat', 'dog', 'run', 'sun', 'big', 'hat', 'map', 'pin', 'red', 'top',
-  'cup', 'bed', 'hop', 'sit', 'net', 'bus', 'nut', 'log', 'pig', 'fan',
-  'ship', 'fish', 'chip', 'shop', 'thin', 'that', 'then', 'this', 'with', 'bath',
-  'tree', 'free', 'grin', 'stop', 'clap', 'flag', 'step', 'drum', 'flat', 'plan',
-]
 
-export const rhymePairs = [
-  { word: 'cat', options: ['hat', 'dog', 'run', 'big'], answer: 'hat' },
-  { word: 'sun', options: ['fun', 'map', 'sit', 'log'], answer: 'fun' },
-  { word: 'bed', options: ['red', 'cup', 'top', 'pin'], answer: 'red' },
-  { word: 'hop', options: ['top', 'net', 'bus', 'fan'], answer: 'top' },
-  { word: 'fish', options: ['dish', 'ship', 'chip', 'shop'], answer: 'dish' },
-  { word: 'tree', options: ['free', 'stop', 'clap', 'step'], answer: 'free' },
-  { word: 'ring', options: ['sing', 'drum', 'flat', 'plan'], answer: 'sing' },
-  { word: 'cake', options: ['lake', 'tree', 'fish', 'bird'], answer: 'lake' },
-  { word: 'night', options: ['light', 'day', 'sun', 'moon'], answer: 'light' },
-  { word: 'ball', options: ['tall', 'small', 'kick', 'throw'], answer: 'tall' },
-  { word: 'boat', options: ['coat', 'ship', 'sail', 'wave'], answer: 'coat' },
-  { word: 'star', options: ['car', 'moon', 'sky', 'bright'], answer: 'car' },
-]
 
 export const shapes = [
   { name: 'Circle', emoji: '⭕', sides: 0 },

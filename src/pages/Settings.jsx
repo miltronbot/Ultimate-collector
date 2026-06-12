@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import { getSettings, saveData, loadData, SETTINGS_KEY, DEFAULT_SETTINGS, ALL_DATA_KEYS, localDateKey } from '../data/config'
+import { gradeOptions } from '../data/grades'
 
 export default function Settings() {
   const [form, setForm] = useState(getSettings)
@@ -79,8 +80,13 @@ export default function Settings() {
             <input id="set-name" className="form-input" value={form.studentName} onChange={e => update('studentName', e.target.value)} />
           </div>
           <div>
-            <label className="form-label" htmlFor="set-grade">Grade</label>
-            <input id="set-grade" className="form-input" value={form.grade} onChange={e => update('grade', e.target.value)} />
+            <label className="form-label" htmlFor="set-grade">Grade Level</label>
+            <select id="set-grade" className="form-input" value={form.gradeLevel} onChange={e => update('gradeLevel', e.target.value)}>
+              {gradeOptions.map(g => <option key={g.id} value={g.id}>{g.label}</option>)}
+            </select>
+            <div style={{ fontSize: 11, color: 'var(--mid)', marginTop: 4 }}>
+              Changes curriculum, TEKS standards, word lists, and game difficulty
+            </div>
           </div>
         </div>
         <div className="g2" style={{ marginBottom: 12 }}>

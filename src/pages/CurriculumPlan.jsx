@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { weeklyPlan, resources } from '../data/curriculumPlan'
 import { teksStandards } from '../data/teksStandards'
-import { getCurrentWeek } from '../data/config'
+import { getCurrentWeek, GRADE } from '../data/config'
 
 const weeks = Object.keys(weeklyPlan)
 const subjectIcons = { reading: '📖', math: '🔢', writing: '✏️', science: '🔬', socialStudies: '🗺️' }
@@ -21,7 +21,7 @@ export default function CurriculumPlan() {
       <div className="note">
         <span className="ni">📋</span>
         <div>
-          8-week curriculum aligned to <strong>Texas TEKS standards</strong> for 2nd grade.
+          8-week curriculum aligned to <strong>Texas TEKS standards</strong> for {GRADE}.
           Each week has a theme with detailed plans for every core subject.
         </div>
       </div>

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { teksStandards, getMasteryLevel } from '../data/teksStandards'
 import { getDynamicMastery, getSubjectMasteryDynamic } from '../data/progressStore'
+import { GRADE } from '../data/config'
 
 const subjectKeys = Object.keys(teksStandards)
 
@@ -26,7 +27,7 @@ export default function TEKSTracker() {
         <span className="ni">🏛️</span>
         <div>
           Track mastery of <strong>Texas Essential Knowledge and Skills (TEKS)</strong> standards
-          for 2nd grade. Each standard is assessed through lessons, games, and activities.
+          for {GRADE}. Each standard is assessed through lessons, games, and activities.
         </div>
       </div>
 

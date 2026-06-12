@@ -1,36 +1,29 @@
-import { loadData, saveData, localDateKey } from './config'
+import { loadData, saveData, localDateKey, GRADE_DATA, GRADE_LEVEL } from './config'
 import { teksStandards } from './teksStandards'
 
-const RESULTS_KEY = 'savannah-game-results'
+// Results are stored per grade level so progress is preserved across grades
+const RESULTS_KEY = `savannah-game-results-${GRADE_LEVEL}`
+const LEGACY_RESULTS_KEY = 'savannah-game-results'
 const SPELLING_KEY = 'savannah-spelling-results'
 
-// Maps each game to the TEKS standard(s) it practices
-export const gameTeksMap = {
-  'math-flash': ['MATH.2.4A', 'MATH.2.4B'],
-  'spelling-quiz': ['ELA.2.1A'],
-  'sight-words': ['ELA.2.2A'],
-  'word-builder': ['ELA.2.1B'],
-  'count-match': ['MATH.2.2A'],
-  'rhyme-time': ['ELA.2.12B'],
-  'shape-match': ['MATH.2.8A'],
-  'tell-time': ['MATH.2.9A'],
-  'money-math': ['MATH.2.7A'],
-  multiplication: ['MATH.2.6A'],
-  'phonics-blender': ['ELA.2.1C'],
-  'reading-comp': ['ELA.2.6A'],
+// Maps each game to the TEKS standard(s) it practices — from the active grade pack
+export const gameTeksMap = GRADE_DATA.gameTeksMap
+
+export function getGameResults() {
+  const results = loadData(RESULTS_KEY, null)
+  if (results) return results
+  // migrate pre-grade-level data into the 2nd grade bucket it was recorded under
+  if (GRADE_LEVEL === '2') return loadData(LEGACY_RESULTS_KEY, {})
+  return {}
 }
 
 export function recordGameResult(gameId, wasCorrect) {
-  const results = loadData(RESULTS_KEY, {})
+  const results = getGameResults()
   const stats = results[gameId] || { correct: 0, total: 0 }
   stats.total += 1
   if (wasCorrect) stats.correct += 1
   results[gameId] = stats
   saveData(RESULTS_KEY, results)
-}
-
-export function getGameResults() {
-  return loadData(RESULTS_KEY, {})
 }
 
 export function recordSpellingTest(week, score, total) {

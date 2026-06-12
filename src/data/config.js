@@ -1,3 +1,5 @@
+import { getGradeData } from './grades'
+
 export function loadData(key, fallback) {
   try {
     const d = localStorage.getItem(key)
@@ -20,7 +22,7 @@ export const SETTINGS_KEY = 'savannah-settings'
 
 export const DEFAULT_SETTINGS = {
   studentName: 'Savannah',
-  grade: '2nd Grade',
+  gradeLevel: '2',
   location: 'Kerrville, TX',
   semesterLabel: 'Spring 2026',
   semesterStart: '2026-01-12',
@@ -30,8 +32,12 @@ export const DEFAULT_SETTINGS = {
 
 const settings = { ...DEFAULT_SETTINGS, ...loadData(SETTINGS_KEY, {}) }
 
+// The active grade-level data pack (TEKS, curriculum, word lists, game difficulty)
+export const GRADE_DATA = getGradeData(settings.gradeLevel)
+export const GRADE_LEVEL = GRADE_DATA.id
+
 export const STUDENT_NAME = settings.studentName
-export const GRADE = settings.grade
+export const GRADE = GRADE_DATA.label
 export const LOCATION = settings.location
 export const SEMESTER_LABEL = settings.semesterLabel
 export const REQUIRED_WEEKLY_HOURS = Number(settings.weeklyHours) || 25.5
@@ -72,7 +78,8 @@ export function localDateKey(date = new Date()) {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
 }
 
-// All localStorage keys the app uses — single source of truth for backup/restore
+// All localStorage keys the app uses — single source of truth for backup/restore.
+// Game results are stored per grade level so progress is kept when switching grades.
 export const ALL_DATA_KEYS = [
   'savannah-settings',
   'savannah-journal',
@@ -80,7 +87,8 @@ export const ALL_DATA_KEYS = [
   'savannah-stickers',
   'savannah-hours',
   'savannah-attendance',
-  'savannah-game-results',
+  'savannah-game-results', // legacy (pre-grade-levels)
+  ...['K', '1', '2', '3', '4', '5'].map(g => `savannah-game-results-${g}`),
   'savannah-spelling-results',
   'savannah-portfolio',
   'savannah-lessons',

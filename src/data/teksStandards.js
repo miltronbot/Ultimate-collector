@@ -76,16 +76,6 @@ export const teksStandards = {
   },
 }
 
-export const getOverallMastery = () => {
-  const allStandards = Object.values(teksStandards).flatMap(s => s.standards)
-  return Math.round(allStandards.reduce((sum, s) => sum + s.mastery, 0) / allStandards.length)
-}
-
-export const getSubjectMastery = (subjectKey) => {
-  const standards = teksStandards[subjectKey].standards
-  return Math.round(standards.reduce((sum, s) => sum + s.mastery, 0) / standards.length)
-}
-
 export const getMasteryLevel = (score) => {
   if (score >= 90) return { label: 'Mastered', color: 'var(--green)', bg: 'var(--green-s)' }
   if (score >= 75) return { label: 'Proficient', color: 'var(--blue)', bg: 'var(--blue-s)' }

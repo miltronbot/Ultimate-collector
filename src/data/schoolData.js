@@ -184,20 +184,8 @@ export const shapes = [
   { name: 'Star', emoji: '⭐', sides: 10 },
 ]
 
-export const badges = [
-  { id: 'first-login', name: 'First Day', emoji: '🌟', desc: 'Started your school journey', earned: true },
-  { id: 'math-5', name: 'Math Whiz', emoji: '🧮', desc: 'Score 5 in a row in Math Flash', earned: false },
-  { id: 'reader', name: 'Bookworm', emoji: '📚', desc: 'Log 5 books in Reading Log', earned: false },
-  { id: 'speller', name: 'Spelling Bee', emoji: '🐝', desc: 'Get 10/10 on a spelling quiz', earned: false },
-  { id: 'writer', name: 'Author', emoji: '✍️', desc: 'Write 5 journal entries', earned: false },
-  { id: 'artist', name: 'Picasso', emoji: '🎨', desc: 'Complete 3 art projects', earned: false },
-  { id: 'scientist', name: 'Explorer', emoji: '🔬', desc: 'Finish all science lessons', earned: false },
-  { id: 'streak-3', name: '3 Day Streak', emoji: '🔥', desc: 'Log in 3 days in a row', earned: true },
-  { id: 'streak-7', name: 'Weekly Warrior', emoji: '⚔️', desc: 'Log in 7 days in a row', earned: false },
-  { id: 'games-all', name: 'Game Master', emoji: '🎮', desc: 'Play every game at least once', earned: false },
-  { id: 'perfect-week', name: 'Perfect Week', emoji: '💎', desc: 'Complete all tasks for a week', earned: false },
-  { id: 'helper', name: 'Kind Heart', emoji: '💝', desc: 'Help a friend with schoolwork', earned: true },
-]
+// Badge definitions now live in progressStore.js (computeBadges) so they
+// can earn themselves from real activity data.
 
 export const fieldTrips = [
   {

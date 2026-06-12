@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import { getSettings, saveData, loadData, SETTINGS_KEY, DEFAULT_SETTINGS, ALL_DATA_KEYS } from '../data/config'
+import { getSettings, saveData, loadData, SETTINGS_KEY, DEFAULT_SETTINGS, ALL_DATA_KEYS, localDateKey } from '../data/config'
 
 export default function Settings() {
   const [form, setForm] = useState(getSettings)
@@ -28,7 +28,7 @@ export default function Settings() {
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = `homeschool-backup-${new Date().toISOString().slice(0, 10)}.json`
+    a.download = `homeschool-backup-${localDateKey()}.json`
     a.click()
     URL.revokeObjectURL(url)
   }

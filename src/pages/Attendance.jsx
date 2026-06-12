@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { getSemesterSchoolDays } from '../data/config'
 
 const STORAGE_KEY = 'savannah-attendance'
 
@@ -68,15 +69,7 @@ export default function Attendance() {
     else setViewMonth(m => m + 1)
   }
 
-  const semesterStart = new Date(2026, 0, 12)
-  const semesterEnd = new Date(2026, 4, 22)
-  let totalSchoolDays = 0
-  const d = new Date(semesterStart)
-  while (d <= semesterEnd) {
-    if (d.getDay() >= 1 && d.getDay() <= 5) totalSchoolDays++
-    d.setDate(d.getDate() + 1)
-  }
-
+  const totalSchoolDays = getSemesterSchoolDays()
   const attendancePct = totalSchoolDays > 0 ? Math.round((totalAttendance / totalSchoolDays) * 100) : 0
 
   return (

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { STUDENT_NAME, GRADE, LOCATION, SEMESTER_LABEL } from './data/config'
 import Overview from './pages/Overview'
 import Schedule from './pages/Schedule'
 import PlayLearn from './pages/PlayLearn'
@@ -70,8 +71,8 @@ export default function App() {
     <>
       <header className="header">
         <div>
-          <div className="logo">🦋 Savannah's School</div>
-          <div className="logo-sub">2nd Grade &bull; Kerrville, TX &bull; TEKS Aligned</div>
+          <div className="logo">🦋 {STUDENT_NAME}'s School</div>
+          <div className="logo-sub">{GRADE} &bull; {LOCATION} &bull; TEKS Aligned</div>
         </div>
         <div className="header-right">
           <div className="mode-toggle">
@@ -113,8 +114,8 @@ export default function App() {
       </main>
 
       <footer className="app-footer">
-        <div>Savannah's Homeschool Dashboard &bull; Kerrville, TX</div>
-        <div>Aligned with Texas Essential Knowledge and Skills (TEKS) &bull; 2nd Grade</div>
+        <div>{STUDENT_NAME}'s Homeschool Dashboard &bull; {LOCATION}</div>
+        <div>Aligned with Texas Essential Knowledge and Skills (TEKS) &bull; {GRADE}</div>
       </footer>
     </>
   )

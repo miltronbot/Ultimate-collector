@@ -42,7 +42,7 @@ export default function ReadingLog() {
       id: Date.now(),
       title: title.trim(),
       author: author.trim(),
-      pages: parseInt(pages) || 0,
+      pages: parseInt(pages, 10) || 0,
       rating,
       date: new Date().toISOString().split('T')[0],
       emoji: selectedEmoji,

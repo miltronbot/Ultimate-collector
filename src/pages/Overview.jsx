@@ -1,12 +1,15 @@
+import { STUDENT_NAME, getCurrentWeek } from '../data/config'
+
 export default function Overview() {
   const hour = new Date().getHours()
   const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening'
+  const currentWeek = getCurrentWeek()
 
   return (
     <div>
       <div className="welcome">
         <div>
-          <h2>{greeting}, Savannah! 🌸</h2>
+          <h2>{greeting}, {STUDENT_NAME}! 🌸</h2>
           <p>
             Welcome to your homeschool dashboard! You're doing amazing this semester.
             Keep up the great work — remember, learning is an adventure! 🦋
@@ -18,7 +21,7 @@ export default function Overview() {
       <div className="g4" style={{ marginBottom: 20 }}>
         <div className="stat sb">
           <div className="lbl">Week</div>
-          <div className="val">5</div>
+          <div className="val">{currentWeek}</div>
           <div className="sub">of 8 weeks</div>
         </div>
         <div className="stat sg">

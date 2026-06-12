@@ -191,8 +191,9 @@ function SightWords() {
         {options.map((w, i) => (
           <button
             key={i}
-            className={`answer-option ${feedback === 'correct' && w === words[idx] ? 'correct' : ''} ${feedback === 'wrong' && w !== words[idx] ? '' : ''}`}
+            className={`answer-option ${feedback === 'correct' && w === words[idx] ? 'correct' : ''}`}
             onClick={() => check(w)}
+            aria-label={`Choose word: ${w}`}
           >
             {w}
           </button>
@@ -317,8 +318,9 @@ function RhymeTime() {
         {pair.options.map((w, i) => (
           <button
             key={i}
-            className={`answer-option ${answered && w === pair.answer ? 'correct' : ''} ${answered && feedback === 'wrong' && w !== pair.answer ? '' : ''}`}
+            className={`answer-option ${answered && w === pair.answer ? 'correct' : ''} ${answered && feedback === 'wrong' && w !== pair.answer ? 'wrong' : ''}`}
             onClick={() => check(w)}
+            aria-label={`Choose: ${w}`}
           >
             {w}
           </button>

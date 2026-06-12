@@ -1,19 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { teksStandards, getOverallMastery, getSubjectMastery, getMasteryLevel } from '../data/teksStandards'
-
-const HOURS_KEY = 'savannah-hours'
-const ATTENDANCE_KEY = 'savannah-attendance'
-
-function loadData(key, fallback) {
-  try {
-    const d = localStorage.getItem(key)
-    return d ? JSON.parse(d) : fallback
-  } catch { return fallback }
-}
+import { REQUIRED_WEEKLY_MINUTES, loadData } from '../data/config'
 
 export default function ParentDashboard() {
-  const [hours] = useState(() => loadData(HOURS_KEY, []))
-  const [attendance] = useState(() => loadData(ATTENDANCE_KEY, {}))
+  const [hours] = useState(() => loadData('savannah-hours', []))
+  const [attendance] = useState(() => loadData('savannah-attendance', {}))
 
   const overallMastery = getOverallMastery()
   const masteryInfo = getMasteryLevel(overallMastery)
@@ -29,8 +20,7 @@ export default function ParentDashboard() {
     })
     .reduce((sum, h) => sum + h.minutes, 0)
 
-  const requiredMinutes = 25.5 * 60
-  const compliancePct = Math.min(100, Math.round((thisWeekHours / requiredMinutes) * 100))
+  const compliancePct = Math.min(100, Math.round((thisWeekHours / REQUIRED_WEEKLY_MINUTES) * 100))
 
   const totalDaysAttended = Object.values(attendance).filter(Boolean).length
 
@@ -100,7 +90,7 @@ export default function ParentDashboard() {
         <div style={{ fontSize: 13, color: 'var(--mid)' }}>
           {(thisWeekHours / 60).toFixed(1)} hours logged / 25.5 hours required
           {compliancePct >= 100 && <span style={{ color: 'var(--green)', fontWeight: 700 }}> — ✅ Compliant!</span>}
-          {compliancePct < 100 && <span> — {((requiredMinutes - thisWeekHours) / 60).toFixed(1)} hours remaining</span>}
+          {compliancePct < 100 && <span> — {((REQUIRED_WEEKLY_MINUTES - thisWeekHours) / 60).toFixed(1)} hours remaining</span>}
         </div>
       </div>
 

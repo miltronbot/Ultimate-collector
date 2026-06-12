@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { REQUIRED_WEEKLY_HOURS, REQUIRED_WEEKLY_MINUTES } from '../data/config'
 
 const STORAGE_KEY = 'savannah-hours'
 const subjects = [
@@ -45,7 +46,7 @@ export default function TimeLog() {
       id: Date.now(),
       date,
       subject,
-      minutes: parseInt(minutes),
+      minutes: parseInt(minutes, 10),
       notes: notes.trim(),
     }
     setEntries(prev => [entry, ...prev])
@@ -72,7 +73,7 @@ export default function TimeLog() {
   })
 
   const totalMinutes = weekEntries.reduce((sum, e) => sum + e.minutes, 0)
-  const requiredMinutes = 25.5 * 60
+  const requiredMinutes = REQUIRED_WEEKLY_MINUTES
   const compliancePct = Math.min(100, Math.round((totalMinutes / requiredMinutes) * 100))
 
   const bySubject = {}
@@ -92,7 +93,7 @@ export default function TimeLog() {
       <div className="note">
         <span className="ni">⚖️</span>
         <div>
-          Texas requires <strong>25.5 hours of instruction per week</strong>.
+          Texas requires <strong>{REQUIRED_WEEKLY_HOURS} hours of instruction per week</strong>.
           Log your daily learning time to stay compliant and build your records.
         </div>
       </div>
@@ -130,7 +131,7 @@ export default function TimeLog() {
         </div>
 
         <div style={{ fontSize: 13, color: 'var(--mid)', display: 'flex', justifyContent: 'space-between' }}>
-          <span>{(totalMinutes / 60).toFixed(1)} of 25.5 hours logged</span>
+          <span>{(totalMinutes / 60).toFixed(1)} of {REQUIRED_WEEKLY_HOURS} hours logged</span>
           {compliancePct >= 100
             ? <span style={{ color: 'var(--green)', fontWeight: 700 }}>✅ Compliant</span>
             : <span>{((requiredMinutes - totalMinutes) / 60).toFixed(1)} hours remaining</span>
@@ -163,7 +164,7 @@ export default function TimeLog() {
           <div className="sec-sm">By Day</div>
           {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(day => {
             const mins = byDay[day] || 0
-            const pct = Math.min(100, (mins / (25.5 * 60 / 5)) * 100)
+            const pct = Math.min(100, (mins / (REQUIRED_WEEKLY_MINUTES / 5)) * 100)
             return (
               <div key={day} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '5px 0' }}>
                 <span style={{ fontSize: 12, fontWeight: 800, minWidth: 30, color: 'var(--mid)' }}>{day}</span>
@@ -215,7 +216,7 @@ export default function TimeLog() {
             <label className="form-label" htmlFor="time-notes">Notes (optional)</label>
             <input id="time-notes" className="form-input" value={notes} onChange={e => setNotes(e.target.value)} placeholder="What did you work on?" />
           </div>
-          <button className="game-btn game-btn-success" onClick={addEntry} disabled={!minutes || parseInt(minutes) <= 0} aria-label="Save time entry">
+          <button className="game-btn game-btn-success" onClick={addEntry} disabled={!minutes || parseInt(minutes, 10) <= 0} aria-label="Save time entry">
             💾 Save Entry
           </button>
         </div>

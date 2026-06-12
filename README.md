@@ -1,12 +1,13 @@
 # 🦋 Savannah's Homeschool Dashboard
 
-A comprehensive, **Texas-first** homeschool platform — TEKS aligned, compliance ready, and 100% private.
-Built for a 2nd grader in Kerrville, TX; configurable for any student via Settings.
+A comprehensive, **Texas-first** K–5 homeschool platform — TEKS aligned, compliance ready, and 100% private.
+Covers **Kindergarten through 5th grade** with a complete data pack per grade; pick the grade in Settings and the whole app adapts.
 
 > See [RESEARCH.md](RESEARCH.md) for the homeschool app market analysis and the pain points this app is designed to solve.
 
 ## What Makes It Different
 
+- **Full K–5 coverage** — six grade packs (245 TEKS standards) with grade-appropriate curriculum, spelling, sight words, reading passages, and game difficulty (K adds to 5 with hour-only clocks; 5th adds to 1,000 with 12×12 facts). 4th grade social studies is Texas History; 5th is U.S. History
 - **Live TEKS mastery** — every game is mapped to a Texas standard; mastery scores update from real play ⚡
 - **Auto-earning badges** — achievements unlock from measurable activity (books logged, attendance streaks, game accuracy), not empty points
 - **Texas compliance built in** — weekly hour tracking (TEC §25.086 / 25.5 hrs), attendance calendar, printable signed reports
@@ -73,8 +74,9 @@ src/
 ├── data/
 │   ├── config.js            # Settings-aware config + safe storage helpers
 │   ├── progressStore.js     # Game results → live TEKS mastery, badges, streaks
-│   ├── schoolData.js        # Schedule, spelling, games, passages, field trips
-│   ├── teksStandards.js     # TEKS standards baseline data
-│   └── curriculumPlan.js    # 8-week curriculum plan + resource links
+│   ├── schoolData.js        # Shared schedule, game registry, field trips
+│   ├── teksStandards.js     # Active grade's TEKS standards
+│   ├── curriculumPlan.js    # Active grade's 8-week plan + resource links
+│   └── grades/              # Complete K-5 data packs (one file per grade)
 └── pages/                   # 17 page components (student + parent views)
 ```

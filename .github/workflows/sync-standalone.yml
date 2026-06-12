@@ -44,8 +44,8 @@ jobs:
         run: |
           git config user.name "savannah-sync-bot"
           git config user.email "actions@users.noreply.github.com"
-          # exclude CI config and build output from the published snapshot
-          rm -rf .github dist
+          # exclude CI config, build output, and internal docs from the published snapshot
+          rm -rf .github dist SYNC_SETUP.md
           git checkout --orphan snapshot
           git add -A
           git commit -m "Savannah's Homeschool Dashboard — auto-synced from development (${GITHUB_SHA:0:7})"

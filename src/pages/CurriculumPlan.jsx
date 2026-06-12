@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { weeklyPlan, resources } from '../data/curriculumPlan'
 import { teksStandards } from '../data/teksStandards'
+import { getCurrentWeek } from '../data/config'
 
 const weeks = Object.keys(weeklyPlan)
 const subjectIcons = { reading: '📖', math: '🔢', writing: '✏️', science: '🔬', socialStudies: '🗺️' }
@@ -8,7 +9,7 @@ const subjectColors = { reading: 'var(--blue)', math: 'var(--yellow)', writing: 
 const subjectBgs = { reading: 'var(--blue-s)', math: 'var(--yellow-s)', writing: 'var(--teal-s)', science: 'var(--green-s)', socialStudies: 'var(--purple-s)' }
 
 export default function CurriculumPlan() {
-  const [selectedWeek, setSelectedWeek] = useState(5)
+  const [selectedWeek, setSelectedWeek] = useState(getCurrentWeek)
   const [showResources, setShowResources] = useState(false)
   const plan = weeklyPlan[selectedWeek]
 

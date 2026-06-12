@@ -1,4 +1,5 @@
-import { teksStandards, getOverallMastery, getSubjectMastery, getMasteryLevel } from '../data/teksStandards'
+import { teksStandards, getMasteryLevel } from '../data/teksStandards'
+import { getOverallMasteryDynamic, getSubjectMasteryDynamic, getDynamicMastery } from '../data/progressStore'
 import { loadData, STUDENT_NAME, GRADE, LOCATION, SEMESTER_LABEL } from '../data/config'
 
 export default function Reports() {
@@ -7,7 +8,8 @@ export default function Reports() {
   const journal = loadData('savannah-journal', [])
   const books = loadData('savannah-reading-log', [])
   const stickers = loadData('savannah-stickers', [])
-  const overallMastery = getOverallMastery()
+  const portfolio = loadData('savannah-portfolio', [])
+  const overallMastery = getOverallMasteryDynamic()
 
   const totalHours = (hours.reduce((sum, h) => sum + h.minutes, 0) / 60).toFixed(1)
   const totalDays = Object.keys(attendance).filter(Boolean).length
@@ -77,9 +79,9 @@ export default function Reports() {
             </thead>
             <tbody>
               {subjectEntries.map(([key, subject]) => {
-                const mastery = getSubjectMastery(key)
+                const mastery = getSubjectMasteryDynamic(key)
                 const info = getMasteryLevel(mastery)
-                const masteredCount = subject.standards.filter(s => s.mastery >= 90).length
+                const masteredCount = subject.standards.filter(s => getDynamicMastery(s).mastery >= 90).length
                 return (
                   <tr key={key} style={{ borderBottom: '1px solid var(--border)' }}>
                     <td style={{ padding: 10, fontWeight: 700 }}>{subject.emoji} {subject.name}</td>
@@ -128,6 +130,30 @@ export default function Reports() {
             <div style={{ fontSize: 13, color: 'var(--light)', padding: 12 }}>No books logged yet</div>
           )}
         </div>
+
+        {portfolio.length > 0 && (
+          <div style={{ marginBottom: 24 }}>
+            <div className="sec-sm">🖼️ Work Samples ({portfolio.length} items)</div>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+              <thead>
+                <tr style={{ borderBottom: '2px solid var(--border)' }}>
+                  <th style={{ textAlign: 'left', padding: 6, fontWeight: 800, color: 'var(--mid)', fontSize: 11 }}>Title</th>
+                  <th style={{ textAlign: 'left', padding: 6, fontWeight: 800, color: 'var(--mid)', fontSize: 11 }}>Subject</th>
+                  <th style={{ textAlign: 'center', padding: 6, fontWeight: 800, color: 'var(--mid)', fontSize: 11 }}>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {portfolio.map((item, i) => (
+                  <tr key={i} style={{ borderBottom: '1px solid var(--border)' }}>
+                    <td style={{ padding: 6, fontWeight: 600 }}>{item.title}</td>
+                    <td style={{ padding: 6, color: 'var(--mid)' }}>{item.subject}</td>
+                    <td style={{ textAlign: 'center', padding: 6 }}>{new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
 
         <div>
           <div className="sec-sm">📓 Journal Entries ({journal.length} entries)</div>

@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { spellingWords } from '../data/schoolData'
+import { recordSpellingTest } from '../data/progressStore'
+import { getCurrentWeek } from '../data/config'
 
 const weeks = Object.keys(spellingWords)
 
 export default function Spelling() {
-  const [selectedWeek, setSelectedWeek] = useState('Week 5')
+  const [selectedWeek, setSelectedWeek] = useState(() => `Week ${getCurrentWeek()}`)
   const [testMode, setTestMode] = useState(false)
   const [testIdx, setTestIdx] = useState(0)
   const [answer, setAnswer] = useState('')
@@ -34,8 +36,10 @@ export default function Spelling() {
     } else {
       setFeedback('wrong')
     }
+    const finalScore = score + (correct ? 1 : 0)
     setTimeout(() => {
       if (testIdx + 1 >= words.length) {
+        recordSpellingTest(selectedWeek, finalScore, words.length)
         setDone(true)
       } else {
         setTestIdx(i => i + 1)

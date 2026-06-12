@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { teksStandards, getSubjectMastery, getMasteryLevel } from '../data/teksStandards'
+import { teksStandards, getMasteryLevel } from '../data/teksStandards'
+import { getDynamicMastery, getSubjectMasteryDynamic } from '../data/progressStore'
 
 const subjectKeys = Object.keys(teksStandards)
 
@@ -8,13 +9,15 @@ export default function TEKSTracker() {
   const [expandedStandard, setExpandedStandard] = useState(null)
 
   const subject = teksStandards[selectedSubject]
-  const mastery = getSubjectMastery(selectedSubject)
+  const mastery = getSubjectMasteryDynamic(selectedSubject)
   const info = getMasteryLevel(mastery)
 
-  const masteredCount = subject.standards.filter(s => s.mastery >= 90).length
-  const proficientCount = subject.standards.filter(s => s.mastery >= 75 && s.mastery < 90).length
-  const developingCount = subject.standards.filter(s => s.mastery >= 60 && s.mastery < 75).length
-  const emergingCount = subject.standards.filter(s => s.mastery < 60).length
+  // resolve each standard's live mastery once for counting + display
+  const liveStandards = subject.standards.map(s => ({ ...s, ...getDynamicMastery(s) }))
+  const masteredCount = liveStandards.filter(s => s.mastery >= 90).length
+  const proficientCount = liveStandards.filter(s => s.mastery >= 75 && s.mastery < 90).length
+  const developingCount = liveStandards.filter(s => s.mastery >= 60 && s.mastery < 75).length
+  const emergingCount = liveStandards.filter(s => s.mastery < 60).length
 
   return (
     <div>
@@ -73,7 +76,7 @@ export default function TEKSTracker() {
           </span>
         </div>
 
-        {subject.standards.map((std, i) => {
+        {liveStandards.map((std, i) => {
           const stdInfo = getMasteryLevel(std.mastery)
           const isExpanded = expandedStandard === std.id
           return (
@@ -81,7 +84,7 @@ export default function TEKSTracker() {
               key={std.id}
               style={{
                 padding: '14px 0',
-                borderBottom: i < subject.standards.length - 1 ? '1px solid var(--border)' : 'none',
+                borderBottom: i < liveStandards.length - 1 ? '1px solid var(--border)' : 'none',
                 cursor: 'pointer',
               }}
               onClick={() => setExpandedStandard(isExpanded ? null : std.id)}
@@ -104,7 +107,9 @@ export default function TEKSTracker() {
                   <div style={{ width: 80, height: 8, background: 'var(--border)', borderRadius: 4, overflow: 'hidden' }}>
                     <div style={{ width: `${std.mastery}%`, height: '100%', background: stdInfo.color, borderRadius: 4 }} />
                   </div>
-                  <span style={{ fontWeight: 800, fontSize: 13, color: stdInfo.color, minWidth: 35 }}>{std.mastery}%</span>
+                  <span style={{ fontWeight: 800, fontSize: 13, color: stdInfo.color, minWidth: 35 }}>
+                    {std.mastery}%{std.live && <span title="Updated live from game practice" aria-label="updated from game practice"> ⚡</span>}
+                  </span>
                   <span style={{ fontSize: 12, transform: isExpanded ? 'rotate(180deg)' : 'rotate(0)', transition: '0.2s' }}>▼</span>
                 </div>
               </div>
@@ -120,6 +125,11 @@ export default function TEKSTracker() {
                     {std.mastery >= 60 && std.mastery < 75 && '📝 Developing well. Focus on targeted practice with this skill.'}
                     {std.mastery < 60 && '🎯 Needs focused attention. Consider extra practice activities and hands-on learning.'}
                   </div>
+                  {std.live && (
+                    <div style={{ marginTop: 4, color: 'var(--blue)', fontWeight: 700 }}>
+                      ⚡ This score updates live as games mapped to this standard are played.
+                    </div>
+                  )}
                 </div>
               )}
             </div>

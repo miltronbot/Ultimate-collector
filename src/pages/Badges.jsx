@@ -1,6 +1,7 @@
-import { badges } from '../data/schoolData'
+import { computeBadges } from '../data/progressStore'
 
 export default function Badges() {
+  const badges = computeBadges()
   const earnedCount = badges.filter(b => b.earned).length
 
   return (
@@ -9,7 +10,9 @@ export default function Badges() {
       <div className="note">
         <span className="ni">🌟</span>
         <div>
-          Earn badges by reaching milestones! You've earned <strong>{earnedCount} of {badges.length}</strong> badges so far. Keep going!
+          Badges earn themselves automatically as you learn! You've earned{' '}
+          <strong>{earnedCount} of {badges.length}</strong> — play games, read books, and keep
+          your streak going to unlock more.
         </div>
       </div>
 
@@ -26,27 +29,40 @@ export default function Badges() {
         </div>
       </div>
 
-      <div className="sec-sm">Earned Badges</div>
-      <div className="badge-grid" style={{ marginBottom: 24 }}>
-        {badges.filter(b => b.earned).map(badge => (
-          <div className="badge-card earned" key={badge.id}>
-            <div className="badge-emoji">{badge.emoji}</div>
-            <div className="badge-name">{badge.name}</div>
-            <div className="badge-desc">{badge.desc}</div>
+      {earnedCount > 0 && (
+        <>
+          <div className="sec-sm">Earned Badges</div>
+          <div className="badge-grid" style={{ marginBottom: 24 }}>
+            {badges.filter(b => b.earned).map(badge => (
+              <div className="badge-card earned" key={badge.id}>
+                <div className="badge-emoji">{badge.emoji}</div>
+                <div className="badge-name">{badge.name}</div>
+                <div className="badge-desc">{badge.desc}</div>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </>
+      )}
 
-      <div className="sec-sm">Locked Badges</div>
-      <div className="badge-grid">
-        {badges.filter(b => !b.earned).map(badge => (
-          <div className="badge-card locked" key={badge.id}>
-            <div className="badge-emoji">🔒</div>
-            <div className="badge-name">{badge.name}</div>
-            <div className="badge-desc">{badge.desc}</div>
+      {earnedCount < badges.length && (
+        <>
+          <div className="sec-sm">Locked Badges</div>
+          <div className="badge-grid">
+            {badges.filter(b => !b.earned).map(badge => (
+              <div className="badge-card locked" key={badge.id}>
+                <div className="badge-emoji">🔒</div>
+                <div className="badge-name">{badge.name}</div>
+                <div className="badge-desc">{badge.desc}</div>
+                {badge.progress && (
+                  <div style={{ marginTop: 6, fontSize: 12, fontWeight: 800, color: 'var(--blue)' }}>
+                    {badge.progress}
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </>
+      )}
     </div>
   )
 }

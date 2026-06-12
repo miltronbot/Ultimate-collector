@@ -72,6 +72,75 @@ export const games = [
   { id: 'shape-match', name: 'Shape Match', emoji: '🔷', desc: 'Identify the shapes', color: 'var(--teal)' },
   { id: 'tell-time', name: 'Tell the Time', emoji: '🕐', desc: 'Read the clock', color: 'var(--blue-d)' },
   { id: 'money-math', name: 'Money Math', emoji: '💰', desc: 'Count coins and bills', color: 'var(--green-d)' },
+  { id: 'multiplication', name: 'Multiplication', emoji: '✖️', desc: 'Count equal groups', color: 'var(--red)' },
+  { id: 'phonics-blender', name: 'Phonics Blender', emoji: '🌀', desc: 'Blend sounds into words', color: 'var(--teal-d)' },
+  { id: 'reading-comp', name: 'Story Time', emoji: '📜', desc: 'Read stories & answer questions', color: 'var(--purple-d)' },
+]
+
+export const phonicsBlends = [
+  { sounds: ['c', 'a', 't'], options: ['cat', 'cot', 'cut', 'can'], answer: 'cat' },
+  { sounds: ['sh', 'i', 'p'], options: ['shop', 'ship', 'shin', 'chip'], answer: 'ship' },
+  { sounds: ['ch', 'a', 't'], options: ['chat', 'chap', 'that', 'cheat'], answer: 'chat' },
+  { sounds: ['th', 'i', 'n'], options: ['than', 'then', 'thin', 'shin'], answer: 'thin' },
+  { sounds: ['s', 'u', 'n'], options: ['son', 'sun', 'fun', 'sin'], answer: 'sun' },
+  { sounds: ['wh', 'a', 'le'], options: ['while', 'whale', 'wheel', 'well'], answer: 'whale' },
+  { sounds: ['b', 'u', 'g'], options: ['bag', 'big', 'bug', 'bog'], answer: 'bug' },
+  { sounds: ['sh', 'e', 'll'], options: ['shall', 'shell', 'sell', 'spell'], answer: 'shell' },
+  { sounds: ['ch', 'e', 'ck'], options: ['check', 'chick', 'chuck', 'deck'], answer: 'check' },
+  { sounds: ['th', 'u', 'mb'], options: ['thumb', 'thump', 'dumb', 'numb'], answer: 'thumb' },
+  { sounds: ['f', 'r', 'o', 'g'], options: ['frog', 'flag', 'from', 'fog'], answer: 'frog' },
+  { sounds: ['s', 't', 'a', 'r'], options: ['stir', 'star', 'start', 'scar'], answer: 'star' },
+]
+
+export const readingPassages = [
+  {
+    text: 'Mia has a little red wagon. She puts her teddy bear in the wagon and pulls it around the yard. The teddy bear loves the bumpy ride!',
+    question: 'What does Mia put in her wagon?',
+    options: ['Her teddy bear', 'Her puppy', 'Her books', 'Her lunch'],
+    answer: 'Her teddy bear',
+  },
+  {
+    text: 'Sam planted a tiny seed in the spring. He watered it every day. By summer, a tall sunflower grew taller than Sam!',
+    question: 'When did Sam plant the seed?',
+    options: ['In the spring', 'In the winter', 'In the fall', 'At night'],
+    answer: 'In the spring',
+  },
+  {
+    text: 'The Texas horned lizard is a small reptile that lives in dry, sandy places. It eats mostly ants and can puff up its body to look bigger when scared.',
+    question: 'What does the horned lizard mostly eat?',
+    options: ['Ants', 'Leaves', 'Fish', 'Berries'],
+    answer: 'Ants',
+  },
+  {
+    text: 'Ella and her grandma baked cookies on Saturday. First they mixed the dough. Then they rolled it into balls. Last, they baked them for ten minutes.',
+    question: 'What did they do FIRST?',
+    options: ['Mixed the dough', 'Rolled it into balls', 'Baked the cookies', 'Ate the cookies'],
+    answer: 'Mixed the dough',
+  },
+  {
+    text: 'A bluebonnet is the state flower of Texas. In spring, fields across the Hill Country turn blue with thousands of these flowers. Families love to take pictures in them.',
+    question: 'What is the state flower of Texas?',
+    options: ['The bluebonnet', 'The rose', 'The daisy', 'The tulip'],
+    answer: 'The bluebonnet',
+  },
+  {
+    text: 'Max the dog dug a hole under the fence. He wanted to chase the squirrel next door. But the squirrel ran up a tree, and Max just got muddy paws!',
+    question: 'Why did Max dig the hole?',
+    options: ['To chase the squirrel', 'To bury a bone', 'To find water', 'To make a bed'],
+    answer: 'To chase the squirrel',
+  },
+  {
+    text: 'Rain comes from clouds. When tiny water drops in a cloud get too heavy, they fall to the ground as rain. Puddles form, and plants drink up the water.',
+    question: 'What happens when water drops get too heavy?',
+    options: ['They fall as rain', 'They turn to snow', 'They float away', 'They disappear'],
+    answer: 'They fall as rain',
+  },
+  {
+    text: 'Leo lost his first tooth at school. His teacher gave him a tiny treasure box to keep it safe. Leo could not stop smiling all the way home.',
+    question: 'How did Leo feel at the end of the story?',
+    options: ['Happy', 'Scared', 'Angry', 'Sleepy'],
+    answer: 'Happy',
+  },
 ]
 
 export const sightWordsList = [

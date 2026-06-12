@@ -1,12 +1,13 @@
 import { useState } from 'react'
-import { teksStandards, getOverallMastery, getSubjectMastery, getMasteryLevel } from '../data/teksStandards'
+import { teksStandards, getMasteryLevel } from '../data/teksStandards'
+import { getOverallMasteryDynamic, getSubjectMasteryDynamic, getDynamicMastery } from '../data/progressStore'
 import { REQUIRED_WEEKLY_MINUTES, REQUIRED_WEEKLY_HOURS, loadData } from '../data/config'
 
 export default function ParentDashboard() {
   const [hours] = useState(() => loadData('savannah-hours', []))
   const [attendance] = useState(() => loadData('savannah-attendance', {}))
 
-  const overallMastery = getOverallMastery()
+  const overallMastery = getOverallMasteryDynamic()
   const masteryInfo = getMasteryLevel(overallMastery)
 
   const thisWeekHours = hours
@@ -98,10 +99,10 @@ export default function ParentDashboard() {
         <div className="sec-sm">📚 Subject Mastery (TEKS Alignment)</div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           {subjects.map(([key, subject]) => {
-            const mastery = getSubjectMastery(key)
+            const mastery = getSubjectMasteryDynamic(key)
             const info = getMasteryLevel(mastery)
             const standardsCount = subject.standards.length
-            const masteredCount = subject.standards.filter(s => s.mastery >= 90).length
+            const masteredCount = subject.standards.filter(s => getDynamicMastery(s).mastery >= 90).length
             return (
               <div key={key} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 <span style={{ fontSize: 20, minWidth: 30 }}>{subject.emoji}</span>

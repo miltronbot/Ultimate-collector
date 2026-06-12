@@ -1,38 +1,51 @@
 # 🦋 Savannah's Homeschool Dashboard
 
-A comprehensive Texas homeschool dashboard for a 2nd grader in Kerrville, TX — aligned with **Texas Essential Knowledge and Skills (TEKS)** standards.
+A comprehensive, **Texas-first** homeschool platform — TEKS aligned, compliance ready, and 100% private.
+Built for a 2nd grader in Kerrville, TX; configurable for any student via Settings.
+
+> See [RESEARCH.md](RESEARCH.md) for the homeschool app market analysis and the pain points this app is designed to solve.
+
+## What Makes It Different
+
+- **Live TEKS mastery** — every game is mapped to a Texas standard; mastery scores update from real play ⚡
+- **Auto-earning badges** — achievements unlock from measurable activity (books logged, attendance streaks, game accuracy), not empty points
+- **Texas compliance built in** — weekly hour tracking (TEC §25.086 / 25.5 hrs), attendance calendar, printable signed reports
+- **Family-owned data** — everything lives in localStorage; one-click JSON backup & restore; zero accounts, zero tracking
+- **Two audiences, one app** — a playful student view and a records-focused parent view behind a single toggle
 
 ## Features
 
 ### 🦋 Student View
 | Tab | Description |
 |-----|-------------|
-| 🏠 Overview | Welcome dashboard with stats, weekly goals, and announcements |
+| 🏠 Overview | Daily lesson checklist (from the live curriculum week), real stats, announcements |
 | 📅 Schedule | Mon–Fri daily schedule (9:00 AM – 12:10 PM) with guided/independent labels |
-| 🎮 Play & Learn | 9 interactive games: Math Flash, Spelling Quiz, Sight Words, Word Builder, Count & Match, Rhyme Time, Shape Match, Tell the Time, Money Math |
-| ✏️ Spelling | 8-week spelling program with practice and test modes |
+| 🎮 Play & Learn | **12 interactive games**: Math Flash, Spelling Quiz, Sight Words, Word Builder, Count & Match, Rhyme Time, Shape Match, Tell the Time, Money Math, Multiplication, Phonics Blender, Story Time |
+| ✏️ Spelling | 8-week spelling program; test scores feed the Spelling Bee badge |
 | 📓 Journal | Writing journal with prompts and word counter |
 | 📚 Reading Log | Book tracker with ratings and reading stats |
 | 📊 Progress | 40-slot sticker chart with weekly progress bars |
-| 🏆 Badges | 12 achievement badges |
+| 🏆 Badges | 12 badges that **earn themselves** from real activity, with progress meters |
+| 🖼️ Portfolio | Photo work samples (auto-compressed) — art, worksheets, writing |
 | 🌍 Field Trips | Kerrville-area learning destinations |
 
 ### 👩 Parent View
 | Tab | Description |
 |-----|-------------|
-| 👩 Parent Hub | Compliance overview, subject mastery, activity summary |
-| 📋 TEKS Standards | Full 2nd-grade TEKS tracker with mastery levels per standard |
-| ⏱️ Time Log | Instructional hour tracking (25.5 hr/week Texas compliance — TEC §25.086) |
-| 📚 Curriculum | 8-week TEKS-aligned curriculum planner with free resources |
-| 📅 Attendance | Calendar-based attendance tracker with semester stats |
-| 📄 Reports | Printable progress reports with signature line |
+| 👩 Parent Hub | Compliance %, live subject mastery, recent journal/books at a glance |
+| 📋 TEKS Standards | Every 2nd-grade standard with live mastery (⚡ = updating from game play) |
+| ⏱️ Time Log | Hour tracking vs. the weekly target, by subject and by day |
+| 📚 Curriculum | 8-week TEKS-mapped curriculum planner + free resource links |
+| 📅 Attendance | Click-to-mark calendar; streaks feed the header and badges |
+| 📄 Reports | Printable progress report: mastery table, reading log, work samples, signature line |
+| ⚙️ Settings | Edit student/semester/hours; **download or restore a full data backup** |
 
 ## Tech Stack
 
-- **React 18** + **Vite 5** — no other runtime dependencies
-- All data persisted in `localStorage` (private, no server, no accounts)
-- iPad/tablet optimized: touch targets, safe-area insets, orientation-aware layouts
-- Print stylesheet for generating paper records
+- **React 18** + **Vite 5** — zero other runtime dependencies
+- localStorage persistence with quota-safe writes and corruption fallbacks
+- iPad/tablet optimized: 44px+ touch targets, safe-area insets, orientation-aware layouts
+- Print stylesheet for paper records; per-page error boundaries
 
 ## Getting Started
 
@@ -45,22 +58,23 @@ npm run preview  # preview the production build
 
 ## Configuration
 
-Student name, grade, location, semester dates, and required weekly hours all live in
-[`src/data/config.js`](src/data/config.js). Edit that one file to adapt the app to a
-different student or school year.
+Open **Parent view → ⚙️ Settings** to change the student name, grade, location, semester dates,
+and weekly hour target — no code edits needed. Defaults live in
+[`src/data/config.js`](src/data/config.js).
 
 ## Project Structure
 
 ```
 src/
-├── App.jsx                  # Header, student/parent mode toggle, navigation
-├── index.css                # Full design system + responsive/print styles
+├── App.jsx                  # Header, live streak, student/parent toggle, navigation
+├── index.css                # Design system + responsive/touch/print styles
 ├── components/
 │   └── ErrorBoundary.jsx    # Per-page crash protection
 ├── data/
-│   ├── config.js            # Student/semester config + safe localStorage helpers
-│   ├── schoolData.js        # Schedule, spelling words, games, badges, field trips
-│   ├── teksStandards.js     # TEKS standards with mastery tracking
+│   ├── config.js            # Settings-aware config + safe storage helpers
+│   ├── progressStore.js     # Game results → live TEKS mastery, badges, streaks
+│   ├── schoolData.js        # Schedule, spelling, games, passages, field trips
+│   ├── teksStandards.js     # TEKS standards baseline data
 │   └── curriculumPlan.js    # 8-week curriculum plan + resource links
-└── pages/                   # 15 page components (student + parent views)
+└── pages/                   # 17 page components (student + parent views)
 ```

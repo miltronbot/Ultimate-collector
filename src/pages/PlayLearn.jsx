@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
-import { games, sightWordsList, wordBuilderWords, rhymePairs, shapes } from '../data/schoolData'
+import { games, sightWordsList, wordBuilderWords, rhymePairs, shapes, phonicsBlends, readingPassages } from '../data/schoolData'
+import { recordGameResult } from '../data/progressStore'
 
 function MathFlash() {
   const [score, setScore] = useState(0)
@@ -28,8 +29,10 @@ function MathFlash() {
 
   const check = () => {
     const num = parseInt(answer, 10)
+    const correct = num === problem.correct
+    recordGameResult('math-flash', correct)
     setTotal(t => t + 1)
-    if (num === problem.correct) {
+    if (correct) {
       setScore(s => s + 1)
       setFeedback('correct')
     } else {
@@ -77,7 +80,9 @@ function SpellingQuiz() {
   const [done, setDone] = useState(false)
 
   const check = () => {
-    if (answer.toLowerCase().trim() === words[idx]) {
+    const correct = answer.toLowerCase().trim() === words[idx]
+    recordGameResult('spelling-quiz', correct)
+    if (correct) {
       setScore(s => s + 1)
       setFeedback('correct')
     } else {
@@ -157,7 +162,9 @@ function SightWords() {
   }, [idx, words])
 
   const check = (word) => {
-    if (word === words[idx]) {
+    const correct = word === words[idx]
+    recordGameResult('sight-words', correct)
+    if (correct) {
       setFeedback('correct')
       setFound(f => [...f, word])
       setTimeout(() => {
@@ -235,7 +242,9 @@ function WordBuilder() {
 
   const check = () => {
     const built = selected.map(i => tiles[i]).join('')
-    if (built === word) {
+    const correct = built === word
+    recordGameResult('word-builder', correct)
+    if (correct) {
       setScore(s => s + 1)
       setFeedback('correct')
       setTimeout(() => {
@@ -296,7 +305,9 @@ function RhymeTime() {
   const check = (word) => {
     if (answered) return
     setAnswered(true)
-    if (word === pair.answer) {
+    const correct = word === pair.answer
+    recordGameResult('rhyme-time', correct)
+    if (correct) {
       setScore(s => s + 1)
       setFeedback('correct')
     } else {
@@ -352,7 +363,9 @@ function ShapeMatch() {
   useEffect(() => { newRound() }, [newRound])
 
   const check = (shape) => {
-    if (shape.name === current.name) {
+    const correct = shape.name === current.name
+    recordGameResult('shape-match', correct)
+    if (correct) {
       setScore(s => s + 1)
       setFeedback('correct')
     } else {
@@ -407,7 +420,9 @@ function CountMatch() {
   useEffect(() => { newProblem() }, [newProblem])
 
   const check = (n) => {
-    if (n === problem.count) {
+    const correct = n === problem.count
+    recordGameResult('count-match', correct)
+    if (correct) {
       setScore(s => s + 1)
       setFeedback('correct')
     } else {
@@ -498,7 +513,9 @@ function TellTime() {
             key={i}
             className={`answer-option ${feedback === 'correct' && o === time.answer ? 'correct' : ''}`}
             onClick={() => {
-              if (o === time.answer) {
+              const correct = o === time.answer
+              recordGameResult('tell-time', correct)
+              if (correct) {
                 setScore(s => s + 1)
                 setFeedback('correct')
               } else {
@@ -565,7 +582,9 @@ function MoneyMath() {
       <div className="answer-options">
         {problem.options.map((n, i) => (
           <button key={i} className="answer-option" onClick={() => {
-            if (n === problem.total) {
+            const correct = n === problem.total
+            recordGameResult('money-math', correct)
+            if (correct) {
               setScore(s => s + 1)
               setFeedback('correct')
             } else {
@@ -585,6 +604,188 @@ function MoneyMath() {
   )
 }
 
+function Multiplication() {
+  const [score, setScore] = useState(0)
+  const [problem, setProblem] = useState(null)
+  const [feedback, setFeedback] = useState('')
+
+  const newProblem = useCallback(() => {
+    const groups = Math.floor(Math.random() * 4) + 2
+    const perGroup = Math.floor(Math.random() * 4) + 2
+    const answer = groups * perGroup
+    const emojis = ['🍓', '🐞', '🌼', '🐠', '🧁']
+    const emoji = emojis[Math.floor(Math.random() * emojis.length)]
+    const opts = new Set([answer])
+    let guard = 0
+    while (opts.size < 4 && guard++ < 50) opts.add(Math.floor(Math.random() * 24) + 4)
+    setProblem({ groups, perGroup, answer, emoji, options: [...opts].sort((a, b) => a - b) })
+    setFeedback('')
+  }, [])
+
+  useEffect(() => { newProblem() }, [newProblem])
+
+  if (!problem) return null
+
+  return (
+    <div className="game-area">
+      <div className="game-score">Score: {score}</div>
+      <div className="sec-sm">Count the equal groups:</div>
+      <div className="game-question" style={{ fontSize: 32 }}>
+        {problem.groups} groups of {problem.perGroup} = ?
+      </div>
+      <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', margin: '16px 0' }}>
+        {Array.from({ length: problem.groups }, (_, g) => (
+          <div key={g} style={{ background: 'var(--blue-s)', border: '2px solid var(--blue)', borderRadius: 12, padding: '10px 14px', fontSize: 22, letterSpacing: 2 }}>
+            {problem.emoji.repeat(problem.perGroup)}
+          </div>
+        ))}
+      </div>
+      <div className="answer-options">
+        {problem.options.map((n, i) => (
+          <button key={i} className="answer-option" onClick={() => {
+            const correct = n === problem.answer
+            recordGameResult('multiplication', correct)
+            if (correct) {
+              setScore(s => s + 1)
+              setFeedback('correct')
+            } else {
+              setFeedback('wrong')
+            }
+            setTimeout(newProblem, 1100)
+          }} aria-label={`Answer ${n}`}>
+            {n}
+          </button>
+        ))}
+      </div>
+      <div className={`game-feedback ${feedback}`}>
+        {feedback === 'correct' && '✅ Multiplication star!'}
+        {feedback === 'wrong' && `❌ It was ${problem.answer}`}
+      </div>
+    </div>
+  )
+}
+
+function PhonicsBlender() {
+  const [idx, setIdx] = useState(0)
+  const [score, setScore] = useState(0)
+  const [feedback, setFeedback] = useState('')
+  const [answered, setAnswered] = useState(false)
+
+  const round = phonicsBlends[idx]
+
+  const check = (word) => {
+    if (answered) return
+    setAnswered(true)
+    const correct = word === round.answer
+    recordGameResult('phonics-blender', correct)
+    if (correct) {
+      setScore(s => s + 1)
+      setFeedback('correct')
+    } else {
+      setFeedback('wrong')
+    }
+    setTimeout(() => {
+      setIdx(i => (i + 1) % phonicsBlends.length)
+      setFeedback('')
+      setAnswered(false)
+    }, 1200)
+  }
+
+  return (
+    <div className="game-area">
+      <div className="game-score">Score: {score}</div>
+      <div className="sec-sm">Blend the sounds — what word do they make?</div>
+      <div style={{ display: 'flex', gap: 10, justifyContent: 'center', margin: '20px 0' }}>
+        {round.sounds.map((s, i) => (
+          <span key={i} style={{
+            fontFamily: "'Fredoka One', cursive", fontSize: 30,
+            background: 'var(--teal-s)', border: '2.5px solid var(--teal)',
+            borderRadius: 12, padding: '10px 18px', color: 'var(--teal-d)',
+          }}>
+            {s}
+          </span>
+        ))}
+      </div>
+      <div className="answer-options">
+        {round.options.map((w, i) => (
+          <button
+            key={i}
+            className={`answer-option ${answered && w === round.answer ? 'correct' : ''} ${answered && feedback === 'wrong' && w !== round.answer ? 'wrong' : ''}`}
+            onClick={() => check(w)}
+            aria-label={`Choose: ${w}`}
+          >
+            {w}
+          </button>
+        ))}
+      </div>
+      <div className={`game-feedback ${feedback}`}>
+        {feedback === 'correct' && '✅ Perfect blending!'}
+        {feedback === 'wrong' && `❌ It was "${round.answer}"`}
+      </div>
+    </div>
+  )
+}
+
+function ReadingComp() {
+  const [idx, setIdx] = useState(0)
+  const [score, setScore] = useState(0)
+  const [total, setTotal] = useState(0)
+  const [feedback, setFeedback] = useState('')
+  const [answered, setAnswered] = useState(false)
+
+  const passage = readingPassages[idx]
+
+  const check = (option) => {
+    if (answered) return
+    setAnswered(true)
+    const correct = option === passage.answer
+    recordGameResult('reading-comp', correct)
+    setTotal(t => t + 1)
+    if (correct) {
+      setScore(s => s + 1)
+      setFeedback('correct')
+    } else {
+      setFeedback('wrong')
+    }
+    setTimeout(() => {
+      setIdx(i => (i + 1) % readingPassages.length)
+      setFeedback('')
+      setAnswered(false)
+    }, 1600)
+  }
+
+  return (
+    <div className="game-area" style={{ textAlign: 'left' }}>
+      <div className="game-score" style={{ textAlign: 'center' }}>Story {idx + 1} of {readingPassages.length} &bull; Score: {score}/{total}</div>
+      <div style={{
+        background: 'var(--yellow-s)', border: '2px solid var(--yellow)', borderRadius: 12,
+        padding: '18px 22px', margin: '0 auto 18px', maxWidth: 540,
+        fontFamily: "'Patrick Hand', cursive", fontSize: 19, lineHeight: 1.7,
+      }}>
+        {passage.text}
+      </div>
+      <div className="sec-sm" style={{ textAlign: 'center' }}>{passage.question}</div>
+      <div className="answer-options">
+        {passage.options.map((o, i) => (
+          <button
+            key={i}
+            className={`answer-option ${answered && o === passage.answer ? 'correct' : ''} ${answered && feedback === 'wrong' && o !== passage.answer ? 'wrong' : ''}`}
+            onClick={() => check(o)}
+            style={{ fontSize: 15 }}
+            aria-label={`Choose: ${o}`}
+          >
+            {o}
+          </button>
+        ))}
+      </div>
+      <div className={`game-feedback ${feedback}`} style={{ textAlign: 'center' }}>
+        {feedback === 'correct' && '✅ Great reading!'}
+        {feedback === 'wrong' && `❌ The answer was "${passage.answer}"`}
+      </div>
+    </div>
+  )
+}
+
 const gameComponents = {
   'math-flash': MathFlash,
   'spelling-quiz': SpellingQuiz,
@@ -595,6 +796,9 @@ const gameComponents = {
   'shape-match': ShapeMatch,
   'tell-time': TellTime,
   'money-math': MoneyMath,
+  multiplication: Multiplication,
+  'phonics-blender': PhonicsBlender,
+  'reading-comp': ReadingComp,
 }
 
 export default function PlayLearn() {

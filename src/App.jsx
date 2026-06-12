@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { STUDENT_NAME, GRADE, LOCATION, SEMESTER_LABEL } from './data/config'
+import { computeStreak } from './data/progressStore'
 import ErrorBoundary from './components/ErrorBoundary'
 import Overview from './pages/Overview'
 import Schedule from './pages/Schedule'
@@ -16,6 +17,8 @@ import TimeLog from './pages/TimeLog'
 import CurriculumPlan from './pages/CurriculumPlan'
 import Attendance from './pages/Attendance'
 import Reports from './pages/Reports'
+import Portfolio from './pages/Portfolio'
+import Settings from './pages/Settings'
 
 const studentTabs = [
   { id: 'overview', label: '🏠 Overview' },
@@ -26,6 +29,7 @@ const studentTabs = [
   { id: 'reading', label: '📚 Reading Log' },
   { id: 'progress', label: '📊 Progress' },
   { id: 'badges', label: '🏆 Badges' },
+  { id: 'portfolio', label: '🖼️ Portfolio' },
   { id: 'fieldtrips', label: '🌍 Field Trips' },
 ]
 
@@ -36,6 +40,7 @@ const parentTabs = [
   { id: 'curriculum', label: '📚 Curriculum' },
   { id: 'attendance', label: '📅 Attendance' },
   { id: 'reports', label: '📄 Reports' },
+  { id: 'settings', label: '⚙️ Settings' },
 ]
 
 const pages = {
@@ -54,12 +59,15 @@ const pages = {
   curriculum: CurriculumPlan,
   attendance: Attendance,
   reports: Reports,
+  portfolio: Portfolio,
+  settings: Settings,
 }
 
 export default function App() {
   const [currentTab, setCurrentTab] = useState('overview')
   const [mode, setMode] = useState('student')
   const Page = pages[currentTab]
+  const streak = computeStreak()
 
   const tabs = mode === 'student' ? studentTabs : parentTabs
 
@@ -92,7 +100,9 @@ export default function App() {
               👩 Parent
             </button>
           </div>
-          <span className="streak-badge">🔥 3-day streak!</span>
+          <span className="streak-badge">
+            {streak > 0 ? `🔥 ${streak}-day streak!` : `📚 ${SEMESTER_LABEL}`}
+          </span>
         </div>
       </header>
 

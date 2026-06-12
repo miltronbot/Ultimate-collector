@@ -1,0 +1,53 @@
+name: Sync school app to standalone repo
+
+# Mirrors this branch to miltronbot/savannah-homeschool-dashboard as a clean
+# single-commit snapshot (no Ultimate-collector history). Runs on every push
+# to the school-app branch, or manually from the Actions tab.
+
+on:
+  push:
+    branches: [claude/launch-savannah-school-app-2HjnD]
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify SYNC_TOKEN secret exists
+        env:
+          SYNC_TOKEN: ${{ secrets.SYNC_TOKEN }}
+        run: |
+          if [ -z "$SYNC_TOKEN" ]; then
+            echo "::error::Missing SYNC_TOKEN repository secret — one-time setup needed."
+            echo ""
+            echo "1. Create a token at: https://github.com/settings/personal-access-tokens/new"
+            echo "   - Repository access: Only select repositories -> savannah-homeschool-dashboard"
+            echo "   - Permissions: Contents -> Read and write"
+            echo "2. Add it to THIS repo (Ultimate-collector):"
+            echo "   Settings -> Secrets and variables -> Actions -> New repository secret"
+            echo "   Name: SYNC_TOKEN   Value: (paste the token)"
+            echo "3. Re-run this workflow from the Actions tab."
+            exit 1
+          fi
+          echo "SYNC_TOKEN found — proceeding."
+
+      - uses: actions/checkout@v4
+
+      - name: Verify the app builds
+        run: |
+          npm ci
+          npm run build
+
+      - name: Push clean snapshot to savannah-homeschool-dashboard
+        env:
+          SYNC_TOKEN: ${{ secrets.SYNC_TOKEN }}
+        run: |
+          git config user.name "savannah-sync-bot"
+          git config user.email "actions@users.noreply.github.com"
+          # exclude CI config and build output from the published snapshot
+          rm -rf .github dist
+          git checkout --orphan snapshot
+          git add -A
+          git commit -m "Savannah's Homeschool Dashboard — auto-synced from development (${GITHUB_SHA:0:7})"
+          git push "https://x-access-token:${SYNC_TOKEN}@github.com/miltronbot/savannah-homeschool-dashboard.git" snapshot:main --force
+          echo "✅ Synced to https://github.com/miltronbot/savannah-homeschool-dashboard"

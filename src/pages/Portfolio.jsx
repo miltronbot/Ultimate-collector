@@ -7,12 +7,15 @@ const SUBJECTS = ['Reading', 'Math', 'Writing', 'Science', 'Social Studies', 'Ar
 // Downscale uploaded photos so localStorage stays well under quota
 function downscaleImage(file, maxSize = 480) {
   return new Promise((resolve, reject) => {
+    const timeout = setTimeout(() => reject(new Error('image load timeout')), 8000)
+    const fail = (msg) => { clearTimeout(timeout); reject(new Error(msg)) }
     const reader = new FileReader()
-    reader.onerror = () => reject(new Error('read failed'))
+    reader.onerror = () => fail('read failed')
     reader.onload = () => {
       const img = new Image()
-      img.onerror = () => reject(new Error('not an image'))
+      img.onerror = () => fail('not an image')
       img.onload = () => {
+        clearTimeout(timeout)
         const scale = Math.min(1, maxSize / Math.max(img.width, img.height))
         const canvas = document.createElement('canvas')
         canvas.width = Math.round(img.width * scale)

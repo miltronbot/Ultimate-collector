@@ -1,4 +1,4 @@
-import { loadData, saveData } from './config'
+import { loadData, saveData, localDateKey } from './config'
 import { teksStandards } from './teksStandards'
 
 const RESULTS_KEY = 'savannah-game-results'
@@ -78,7 +78,7 @@ export function computeStreak() {
   for (let i = 0; i < 365; i++) {
     const dow = d.getDay()
     if (dow >= 1 && dow <= 5) {
-      const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+      const key = localDateKey(d)
       if (attendance[key]) {
         streak++
       } else if (streak > 0 || i > 0) {
@@ -101,7 +101,7 @@ function hasPerfectWeek(attendance) {
     if (dow < 1 || dow > 5) continue
     const monday = new Date(date)
     monday.setDate(date.getDate() - (dow - 1))
-    const weekKey = monday.toISOString().slice(0, 10)
+    const weekKey = localDateKey(monday)
     byWeek[weekKey] = (byWeek[weekKey] || 0) + 1
   }
   return Object.values(byWeek).some(count => count >= 5)

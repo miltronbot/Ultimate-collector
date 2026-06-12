@@ -11,7 +11,7 @@ const subjectBgs = { reading: 'var(--blue-s)', math: 'var(--yellow-s)', writing:
 export default function CurriculumPlan() {
   const [selectedWeek, setSelectedWeek] = useState(getCurrentWeek)
   const [showResources, setShowResources] = useState(false)
-  const plan = weeklyPlan[selectedWeek]
+  const plan = weeklyPlan[selectedWeek] || weeklyPlan[1]
 
   const allTeksStandards = Object.values(teksStandards).flatMap(s => s.standards)
 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { loadData, saveData } from '../data/config'
+import { loadData, saveData, localDateKey } from '../data/config'
 
 const STORAGE_KEY = 'savannah-reading-log'
 const DEFAULT_BOOKS = [
@@ -33,7 +33,7 @@ export default function ReadingLog() {
       author: author.trim(),
       pages: parseInt(pages, 10) || 0,
       rating,
-      date: new Date().toISOString().split('T')[0],
+      date: localDateKey(),
       emoji: selectedEmoji,
     }
     setBooks(prev => [book, ...prev])

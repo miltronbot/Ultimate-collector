@@ -15,7 +15,8 @@ export default function Spelling() {
   const [done, setDone] = useState(false)
   const [results, setResults] = useState([])
 
-  const words = spellingWords[selectedWeek]
+  // fallback keeps the page alive even if a week key is ever missing
+  const words = spellingWords[selectedWeek] || spellingWords['Week 1']
 
   const startTest = () => {
     setTestMode(true)

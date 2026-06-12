@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { STUDENT_NAME, getCurrentWeek, loadData, saveData } from '../data/config'
+import { STUDENT_NAME, getCurrentWeek, loadData, saveData, localDateKey } from '../data/config'
 import { weeklyPlan } from '../data/curriculumPlan'
 import { computeBadges } from '../data/progressStore'
 
@@ -13,11 +13,6 @@ const todaysSubjects = [
   { key: 'socialStudies', label: 'Social Studies', emoji: '🗺️' },
 ]
 
-function todayKey() {
-  const d = new Date()
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
-}
-
 export default function Overview() {
   const hour = new Date().getHours()
   const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening'
@@ -25,7 +20,7 @@ export default function Overview() {
   const plan = weeklyPlan[currentWeek] || weeklyPlan[1]
 
   const [lessons, setLessons] = useState(() => loadData(LESSONS_KEY, {}))
-  const today = todayKey()
+  const today = localDateKey()
   const todayDone = lessons[today] || []
 
   const toggleLesson = (key) => {

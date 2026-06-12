@@ -66,6 +66,12 @@ export function getCurrentWeek() {
   return Math.max(1, Math.min(8, weeks))
 }
 
+// Local-timezone YYYY-MM-DD key — used for attendance, lessons, and logs.
+// Never use toISOString() for day keys: it shifts dates near midnight in non-UTC zones.
+export function localDateKey(date = new Date()) {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
+}
+
 // All localStorage keys the app uses — single source of truth for backup/restore
 export const ALL_DATA_KEYS = [
   'savannah-settings',

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { REQUIRED_WEEKLY_HOURS, REQUIRED_WEEKLY_MINUTES, loadData, saveData } from '../data/config'
+import { REQUIRED_WEEKLY_HOURS, REQUIRED_WEEKLY_MINUTES, loadData, saveData, localDateKey } from '../data/config'
 
 const STORAGE_KEY = 'savannah-hours'
 const subjects = [
@@ -23,7 +23,7 @@ function getWeekStart(date) {
 export default function TimeLog() {
   const [entries, setEntries] = useState(() => loadData(STORAGE_KEY, []))
   const [showForm, setShowForm] = useState(false)
-  const [date, setDate] = useState(new Date().toISOString().split('T')[0])
+  const [date, setDate] = useState(() => localDateKey())
   const [subject, setSubject] = useState('reading')
   const [minutes, setMinutes] = useState('')
   const [notes, setNotes] = useState('')

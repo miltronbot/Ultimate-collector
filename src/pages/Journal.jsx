@@ -1,19 +1,7 @@
 import { useState, useEffect } from 'react'
+import { loadData, saveData } from '../data/config'
 
 const STORAGE_KEY = 'savannah-journal'
-
-function loadEntries() {
-  try {
-    const data = localStorage.getItem(STORAGE_KEY)
-    return data ? JSON.parse(data) : []
-  } catch {
-    return []
-  }
-}
-
-function saveEntries(entries) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(entries))
-}
 
 const prompts = [
   'What made you smile today?',
@@ -31,12 +19,12 @@ const prompts = [
 ]
 
 export default function Journal() {
-  const [entries, setEntries] = useState(loadEntries)
+  const [entries, setEntries] = useState(() => loadData(STORAGE_KEY, []))
   const [text, setText] = useState('')
   const [prompt, setPrompt] = useState('')
 
   useEffect(() => {
-    saveEntries(entries)
+    saveData(STORAGE_KEY, entries)
   }, [entries])
 
   const newPrompt = () => {

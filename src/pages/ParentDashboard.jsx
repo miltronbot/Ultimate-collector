@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { teksStandards, getOverallMastery, getSubjectMastery, getMasteryLevel } from '../data/teksStandards'
-import { REQUIRED_WEEKLY_MINUTES, loadData } from '../data/config'
+import { REQUIRED_WEEKLY_MINUTES, REQUIRED_WEEKLY_HOURS, loadData } from '../data/config'
 
 export default function ParentDashboard() {
   const [hours] = useState(() => loadData('savannah-hours', []))
@@ -36,7 +36,7 @@ export default function ParentDashboard() {
       <div className="note">
         <span className="ni">📋</span>
         <div>
-          Overview of Savannah's progress, Texas compliance status, and academic performance.
+          Overview of your student's progress, Texas compliance status, and academic performance.
           This view is designed for parents and guardians.
         </div>
       </div>
@@ -45,7 +45,7 @@ export default function ParentDashboard() {
         <div className="stat sb">
           <div className="lbl">This Week</div>
           <div className="val">{(thisWeekHours / 60).toFixed(1)}h</div>
-          <div className="sub">of 25.5h required</div>
+          <div className="sub">of {REQUIRED_WEEKLY_HOURS}h required</div>
         </div>
         <div className="stat sg">
           <div className="lbl">Overall Mastery</div>
@@ -69,7 +69,7 @@ export default function ParentDashboard() {
         <div className="note note-blue" style={{ marginBottom: 12 }}>
           <span className="ni">⚖️</span>
           <div>
-            Texas law requires <strong>25.5 instructional hours per week</strong> (Texas Education Code §25.086).
+            Texas law requires <strong>{REQUIRED_WEEKLY_HOURS} instructional hours per week</strong> (Texas Education Code §25.086).
             Log hours in the <strong>Time Log</strong> tab to track compliance.
           </div>
         </div>
@@ -88,7 +88,7 @@ export default function ParentDashboard() {
           </span>
         </div>
         <div style={{ fontSize: 13, color: 'var(--mid)' }}>
-          {(thisWeekHours / 60).toFixed(1)} hours logged / 25.5 hours required
+          {(thisWeekHours / 60).toFixed(1)} hours logged / {REQUIRED_WEEKLY_HOURS} hours required
           {compliancePct >= 100 && <span style={{ color: 'var(--green)', fontWeight: 700 }}> — ✅ Compliant!</span>}
           {compliancePct < 100 && <span> — {((REQUIRED_WEEKLY_MINUTES - thisWeekHours) / 60).toFixed(1)} hours remaining</span>}
         </div>

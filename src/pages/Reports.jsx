@@ -1,11 +1,5 @@
 import { teksStandards, getOverallMastery, getSubjectMastery, getMasteryLevel } from '../data/teksStandards'
-
-function loadData(key, fallback) {
-  try {
-    const d = localStorage.getItem(key)
-    return d ? JSON.parse(d) : fallback
-  } catch { return fallback }
-}
+import { loadData, STUDENT_NAME, GRADE, LOCATION, SEMESTER_LABEL } from '../data/config'
 
 export default function Reports() {
   const hours = loadData('savannah-hours', [])
@@ -41,10 +35,10 @@ export default function Reports() {
       <div className="card" id="printable-report" style={{ marginBottom: 16 }}>
         <div style={{ textAlign: 'center', marginBottom: 24 }}>
           <div style={{ fontFamily: "'Fredoka One', cursive", fontSize: 24, marginBottom: 4 }}>
-            Savannah's Homeschool Progress Report
+            {STUDENT_NAME}'s Homeschool Progress Report
           </div>
           <div style={{ fontSize: 14, color: 'var(--mid)' }}>
-            2nd Grade — Kerrville, TX — Spring 2026
+            {GRADE} — {LOCATION} — {SEMESTER_LABEL}
           </div>
           <div style={{ fontSize: 12, color: 'var(--light)', marginTop: 4 }}>
             Generated {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
@@ -152,8 +146,8 @@ export default function Reports() {
         </div>
 
         <div style={{ marginTop: 32, paddingTop: 16, borderTop: '2px solid var(--border)', textAlign: 'center', fontSize: 11, color: 'var(--light)' }}>
-          <div>This report is generated from Savannah's Homeschool Dashboard</div>
-          <div>Aligned with Texas Essential Knowledge and Skills (TEKS) — 2nd Grade</div>
+          <div>This report is generated from {STUDENT_NAME}'s Homeschool Dashboard</div>
+          <div>Aligned with Texas Essential Knowledge and Skills (TEKS) — {GRADE}</div>
           <div style={{ marginTop: 8 }}>Parent Signature: ________________________________ &nbsp;&nbsp; Date: ________________</div>
         </div>
       </div>

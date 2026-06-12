@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { REQUIRED_WEEKLY_HOURS, REQUIRED_WEEKLY_MINUTES } from '../data/config'
+import { REQUIRED_WEEKLY_HOURS, REQUIRED_WEEKLY_MINUTES, loadData, saveData } from '../data/config'
 
 const STORAGE_KEY = 'savannah-hours'
 const subjects = [
@@ -13,13 +13,6 @@ const subjects = [
   { id: 'other', name: 'Other Learning', emoji: '⭐', color: 'var(--mid)' },
 ]
 
-function loadHours() {
-  try {
-    const d = localStorage.getItem(STORAGE_KEY)
-    return d ? JSON.parse(d) : []
-  } catch { return [] }
-}
-
 function getWeekStart(date) {
   const d = new Date(date)
   d.setDate(d.getDate() - d.getDay())
@@ -28,7 +21,7 @@ function getWeekStart(date) {
 }
 
 export default function TimeLog() {
-  const [entries, setEntries] = useState(loadHours)
+  const [entries, setEntries] = useState(() => loadData(STORAGE_KEY, []))
   const [showForm, setShowForm] = useState(false)
   const [date, setDate] = useState(new Date().toISOString().split('T')[0])
   const [subject, setSubject] = useState('reading')
@@ -37,7 +30,7 @@ export default function TimeLog() {
   const [viewWeek, setViewWeek] = useState('current')
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries))
+    saveData(STORAGE_KEY, entries)
   }, [entries])
 
   const addEntry = () => {

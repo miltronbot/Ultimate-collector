@@ -1,26 +1,24 @@
 import { useState } from 'react'
+import { loadData, saveData, getCurrentWeek } from '../data/config'
 
-const stickers = ['⭐', '🌟', '💫', '🎯', '🏆', '🌈', '🦋', '🌸', '🎨', '📚', '✏️', '🧮', '🔬', '🎵', '💎', '🌻', '🐝', '🦊', '🐢', '🎈']
+const STORAGE_KEY = 'savannah-stickers'
+const TOTAL_STICKERS = 40
+const stickerEmojis = ['⭐', '🌟', '💫', '🎯', '🏆', '🌈', '🦋', '🌸', '🎨', '📚', '✏️', '🧮', '🔬', '🎵', '💎', '🌻', '🐝', '🦊', '🐢', '🎈']
+const DEFAULT_STICKERS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
 
 export default function Progress() {
-  const [earned, setEarned] = useState(() => {
-    try {
-      const data = localStorage.getItem('savannah-stickers')
-      return data ? JSON.parse(data) : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
-    } catch {
-      return []
-    }
-  })
+  const [earned, setEarned] = useState(() => loadData(STORAGE_KEY, DEFAULT_STICKERS))
+  const currentWeek = getCurrentWeek()
 
   const toggleSticker = (idx) => {
     setEarned(prev => {
       const next = prev.includes(idx) ? prev.filter(i => i !== idx) : [...prev, idx]
-      localStorage.setItem('savannah-stickers', JSON.stringify(next))
+      saveData(STORAGE_KEY, next)
       return next
     })
   }
 
-  const progress = Math.round((earned.length / 40) * 100)
+  const progress = Math.round((earned.length / TOTAL_STICKERS) * 100)
 
   return (
     <div>
@@ -34,7 +32,7 @@ export default function Progress() {
         <div className="stat sb">
           <div className="lbl">Stickers Earned</div>
           <div className="val">{earned.length}</div>
-          <div className="sub">of 40 total</div>
+          <div className="sub">of {TOTAL_STICKERS} total</div>
         </div>
         <div className="stat sg">
           <div className="lbl">Progress</div>
@@ -43,7 +41,7 @@ export default function Progress() {
         </div>
         <div className="stat sy">
           <div className="lbl">Current Week</div>
-          <div className="val">5</div>
+          <div className="val">{currentWeek}</div>
           <div className="sub">of 8 weeks</div>
         </div>
       </div>
@@ -57,7 +55,7 @@ export default function Progress() {
             const pct = (weekEarned / 5) * 100
             return (
               <div key={week} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                <span style={{ fontWeight: 800, fontSize: 13, minWidth: 55, color: week <= 5 ? 'var(--dark)' : 'var(--light)' }}>
+                <span style={{ fontWeight: 800, fontSize: 13, minWidth: 55, color: week <= currentWeek ? 'var(--dark)' : 'var(--light)' }}>
                   Week {week}
                 </span>
                 <div style={{ flex: 1, height: 12, background: 'var(--border)', borderRadius: 6, overflow: 'hidden' }}>
@@ -73,7 +71,7 @@ export default function Progress() {
       <div className="card">
         <div className="sec-sm">🌟 Sticker Chart</div>
         <div className="sticker-chart">
-          {Array.from({ length: 40 }, (_, i) => (
+          {Array.from({ length: TOTAL_STICKERS }, (_, i) => (
             <div
               key={i}
               className={`sticker-slot ${earned.includes(i) ? 'filled' : ''}`}
@@ -81,7 +79,7 @@ export default function Progress() {
               title={earned.includes(i) ? 'Click to remove' : 'Click to earn'}
               style={{ cursor: 'pointer' }}
             >
-              {earned.includes(i) ? stickers[i % stickers.length] : ''}
+              {earned.includes(i) ? stickerEmojis[i % stickerEmojis.length] : ''}
             </div>
           ))}
         </div>

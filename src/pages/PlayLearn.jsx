@@ -27,7 +27,7 @@ function MathFlash() {
   useEffect(() => { newProblem() }, [newProblem])
 
   const check = () => {
-    const num = parseInt(answer)
+    const num = parseInt(answer, 10)
     setTotal(t => t + 1)
     if (num === problem.correct) {
       setScore(s => s + 1)
@@ -519,29 +519,30 @@ function TellTime() {
   )
 }
 
+const COINS = [
+  { name: 'penny', value: 1, emoji: '🟤' },
+  { name: 'nickel', value: 5, emoji: '⚪' },
+  { name: 'dime', value: 10, emoji: '🔘' },
+  { name: 'quarter', value: 25, emoji: '🥈' },
+]
+
 function MoneyMath() {
   const [score, setScore] = useState(0)
   const [problem, setProblem] = useState(null)
   const [feedback, setFeedback] = useState('')
-
-  const coins = [
-    { name: 'penny', value: 1, emoji: '🪙' },
-    { name: 'nickel', value: 5, emoji: '🪙' },
-    { name: 'dime', value: 10, emoji: '🪙' },
-    { name: 'quarter', value: 25, emoji: '🪙' },
-  ]
 
   const newProblem = useCallback(() => {
     const picked = []
     const count = Math.floor(Math.random() * 4) + 2
     let total = 0
     for (let i = 0; i < count; i++) {
-      const coin = coins[Math.floor(Math.random() * coins.length)]
+      const coin = COINS[Math.floor(Math.random() * COINS.length)]
       picked.push(coin)
       total += coin.value
     }
     const opts = new Set([total])
-    while (opts.size < 4) opts.add(Math.floor(Math.random() * 100) + 5)
+    let guard = 0
+    while (opts.size < 4 && guard++ < 50) opts.add(Math.floor(Math.random() * 100) + 5)
     setProblem({ picked, total, options: [...opts].sort((a, b) => a - b) })
     setFeedback('')
   }, [])

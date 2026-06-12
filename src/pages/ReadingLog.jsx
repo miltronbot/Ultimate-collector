@@ -1,30 +1,19 @@
 import { useState, useEffect } from 'react'
+import { loadData, saveData } from '../data/config'
 
 const STORAGE_KEY = 'savannah-reading-log'
-
-function loadBooks() {
-  try {
-    const data = localStorage.getItem(STORAGE_KEY)
-    return data ? JSON.parse(data) : [
-      { id: 1, title: "Charlotte's Web", author: 'E.B. White', pages: 184, rating: 5, date: '2026-03-10', emoji: '🕷️' },
-      { id: 2, title: 'Diary of a Wimpy Kid', author: 'Jeff Kinney', pages: 217, rating: 4, date: '2026-03-18', emoji: '📔' },
-      { id: 3, title: 'Magic Tree House #1', author: 'Mary Pope Osborne', pages: 68, rating: 5, date: '2026-03-25', emoji: '🏠' },
-      { id: 4, title: 'Junie B. Jones', author: 'Barbara Park', pages: 69, rating: 4, date: '2026-04-02', emoji: '👧' },
-      { id: 5, title: 'Dog Man', author: 'Dav Pilkey', pages: 231, rating: 5, date: '2026-04-05', emoji: '🐕' },
-    ]
-  } catch {
-    return []
-  }
-}
-
-function saveBooks(books) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(books))
-}
+const DEFAULT_BOOKS = [
+  { id: 1, title: "Charlotte's Web", author: 'E.B. White', pages: 184, rating: 5, date: '2026-03-10', emoji: '🕷️' },
+  { id: 2, title: 'Diary of a Wimpy Kid', author: 'Jeff Kinney', pages: 217, rating: 4, date: '2026-03-18', emoji: '📔' },
+  { id: 3, title: 'Magic Tree House #1', author: 'Mary Pope Osborne', pages: 68, rating: 5, date: '2026-03-25', emoji: '🏠' },
+  { id: 4, title: 'Junie B. Jones', author: 'Barbara Park', pages: 69, rating: 4, date: '2026-04-02', emoji: '👧' },
+  { id: 5, title: 'Dog Man', author: 'Dav Pilkey', pages: 231, rating: 5, date: '2026-04-05', emoji: '🐕' },
+]
 
 const bookEmojis = ['📕', '📗', '📘', '📙', '📔', '📚', '📖', '🕷️', '🐕', '🏠', '👧', '🦁', '🐱', '🌟', '🚀', '🦋', '🧙', '🐉']
 
 export default function ReadingLog() {
-  const [books, setBooks] = useState(loadBooks)
+  const [books, setBooks] = useState(() => loadData(STORAGE_KEY, DEFAULT_BOOKS))
   const [showForm, setShowForm] = useState(false)
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
@@ -33,7 +22,7 @@ export default function ReadingLog() {
   const [selectedEmoji, setSelectedEmoji] = useState('📕')
 
   useEffect(() => {
-    saveBooks(books)
+    saveData(STORAGE_KEY, books)
   }, [books])
 
   const addBook = () => {

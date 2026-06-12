@@ -1,14 +1,7 @@
 import { useState, useEffect } from 'react'
-import { getSemesterSchoolDays } from '../data/config'
+import { getSemesterSchoolDays, loadData, saveData } from '../data/config'
 
 const STORAGE_KEY = 'savannah-attendance'
-
-function loadAttendance() {
-  try {
-    const d = localStorage.getItem(STORAGE_KEY)
-    return d ? JSON.parse(d) : {}
-  } catch { return {} }
-}
 
 function getMonthDays(year, month) {
   const days = []
@@ -27,13 +20,13 @@ function formatDateKey(year, month, day) {
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
 export default function Attendance() {
-  const [attendance, setAttendance] = useState(loadAttendance)
+  const [attendance, setAttendance] = useState(() => loadData(STORAGE_KEY, {}))
   const now = new Date()
   const [viewMonth, setViewMonth] = useState(now.getMonth())
   const [viewYear, setViewYear] = useState(now.getFullYear())
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(attendance))
+    saveData(STORAGE_KEY, attendance)
   }, [attendance])
 
   const days = getMonthDays(viewYear, viewMonth)

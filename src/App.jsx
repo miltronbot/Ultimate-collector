@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { STUDENT_NAME, GRADE, LOCATION, SEMESTER_LABEL } from './data/config'
+import ErrorBoundary from './components/ErrorBoundary'
 import Overview from './pages/Overview'
 import Schedule from './pages/Schedule'
 import PlayLearn from './pages/PlayLearn'
@@ -110,7 +111,9 @@ export default function App() {
       </nav>
 
       <main role="main">
-        <Page />
+        <ErrorBoundary key={currentTab}>
+          <Page />
+        </ErrorBoundary>
       </main>
 
       <footer className="app-footer">
